@@ -30,10 +30,10 @@ public class App {
         break;
       }
 
-      String url = "jdbc:mysql://127.0.0.1:3306/Hwa?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull";
+      String url = "jdbc:mysql://127.0.0.1:3306/text_board?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull";
 
       try {
-        conn = DriverManager.getConnection(url, "root", "");
+        conn = DriverManager.getConnection(url, "sbsst", "sbs123414");
 
         Container.conn = conn;
 
@@ -77,14 +77,6 @@ public class App {
       Container.articleController.modify();
     } else if (rq.getUrlPath().equals("/usr/article/delete")) {
       Container.articleController.delete();
-    } else if (rq.getUrlPath().equals("리뷰작성")) {
-      Container.reviewController.write();
-    } else if (rq.getUrlPath().equals("리뷰목록")) {
-      Container.reviewController.showList();
-    } else if (rq.getUrlPath().equals("리뷰수정")) {
-      Container.reviewController.modify();
-    } else if (rq.getUrlPath().equals("리뷰삭제")) {
-      Container.reviewController.delete();
     } else if (cmd.equals("system exit")) {
       System.out.println("시스템 종료");
       System.exit(0);
