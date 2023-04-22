@@ -1,8 +1,5 @@
 package org.example;
 
-import org.example.controller.ArticleController;
-import org.example.controller.MemberController;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -23,7 +20,7 @@ public class App {
       Connection conn = null;
 
       try {
-        Class.forName("com.mysql.jdbc.Driver");
+        Class.forName("com.cj.mysql.jdbc.Driver");
       } catch (ClassNotFoundException e) {
         System.out.println("예외 : MySQL 드라이버 로딩 실패");
         System.out.println("프로그램을 종료합니다.");
@@ -33,7 +30,7 @@ public class App {
       String url = "jdbc:mysql://127.0.0.1:3306/text_board?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull";
 
       try {
-        conn = DriverManager.getConnection(url, "sbsst", "sbs123414");
+        conn = DriverManager.getConnection(url, "root", "29158080");
 
         Container.conn = conn;
 
@@ -67,16 +64,16 @@ public class App {
       Container.memberController.logout();
     } else if (rq.getUrlPath().equals("/usr/member/whoami")) {
       Container.memberController.whoami();
-    } else if (rq.getUrlPath().equals("/usr/article/write")) {
-      Container.articleController.write();
-    } else if (rq.getUrlPath().equals("/usr/article/list")) {
-      Container.articleController.showList();
-    } else if(rq.getUrlPath().equals("/usr/article/detail")) {
-      Container.articleController.showDetail();
-    } else if (rq.getUrlPath().equals("/usr/article/modify")) {
-      Container.articleController.modify();
-    } else if (rq.getUrlPath().equals("/usr/article/delete")) {
-      Container.articleController.delete();
+    } else if (rq.getUrlPath().equals("/usr/product/write")) {
+      Container.productController.write();
+    } else if (rq.getUrlPath().equals("/usr/product/list")) {
+      Container.productController.showList();
+    } else if(rq.getUrlPath().equals("/usr/product/detail")) {
+      Container.productController.showDetail();
+    } else if (rq.getUrlPath().equals("/usr/product/modify")) {
+      Container.productController.modify();
+    } else if (rq.getUrlPath().equals("/usr/product/delete")) {
+      Container.productController.delete();
     } else if (cmd.equals("system exit")) {
       System.out.println("시스템 종료");
       System.exit(0);

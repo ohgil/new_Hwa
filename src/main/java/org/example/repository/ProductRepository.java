@@ -1,7 +1,7 @@
 package org.example.repository;
 
 import org.example.Container;
-import org.example.dto.Article;
+import org.example.dto.Product;
 import org.example.util.DBUtil;
 import org.example.util.SecSql;
 
@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class ArticleRepository {
+public class ProductRepository {
   public int write(int memberId, String title, String body) {
     SecSql sql = new SecSql();
 
@@ -19,12 +19,13 @@ public class ArticleRepository {
     sql.append(", memberId = ?", memberId);
     sql.append(", title = ?", title);
     sql.append(", `body` = ?", body);
+    sql.append(", `hit` = ?", 0);
 
     int id = DBUtil.insert(Container.conn, sql);
     return id;
   }
 
-  public boolean articleExists(int id) {
+  public boolean productExists(int id) {
     SecSql sql = new SecSql();
 
     sql.append("SELECT COUNT(*) > 0");
@@ -46,7 +47,7 @@ public class ArticleRepository {
   public void update(int id, String title, String body) {
     SecSql sql = new SecSql();
 
-    sql.append("UPDATE article");
+    sql.append("UPDATE product");
     sql.append("SET updateDate = NOW()");
     sql.append(", title = ?", title);
     sql.append(", `body` = ?", body);
@@ -55,7 +56,7 @@ public class ArticleRepository {
     DBUtil.update(Container.conn, sql);
   }
 
-  public Article getArticleById(int id) {
+  public Product getProductById(int id) {
     SecSql sql = new SecSql();
 
     sql.append("SELECT A.*");
@@ -65,16 +66,16 @@ public class ArticleRepository {
     sql.append("ON A.memberId = M.id");
     sql.append("WHERE A.id = ?", id);
 
-    Map<String, Object> articleMap = DBUtil.selectRow(Container.conn, sql);
+    Map<String, Object> productMap = DBUtil.selectRow(Container.conn, sql);
 
-    if (articleMap.isEmpty()) {
+    if (productMap.isEmpty()) {
       return null;
     }
 
-    return new Article(articleMap);
+    return new Product(productMap);
   }
 
-  public List<Article> getArticles(Map<String, Object> args, String searchKeyword) {
+  public List<Product> getProducts(Map<String, Object> args, String searchKeyword) {
     SecSql sql = new SecSql();
 
     if(args.containsKey("searchKeyword")) {
@@ -93,7 +94,7 @@ public class ArticleRepository {
     }
 
     sql.append("SELECT A.*, M.name AS extra__writerName");
-    sql.append("FROM article AS A");
+    sql.append("FROM product AS A");
     sql.append("INNER JOIN member AS M");
     sql.append("ON A.memberId = M.id");
     if(searchKeyword.length() > 0) {
@@ -105,21 +106,21 @@ public class ArticleRepository {
       sql.append("LIMIT ?, ?", limitFrom, limitTake);
     }
 
-    List<Article> articles = new ArrayList<>();
+    List<Product> products = new ArrayList<>();
 
-    List<Map<String, Object>> articleListMap = DBUtil.selectRows(Container.conn, sql);
+    List<Map<String, Object>> productListMap = DBUtil.selectRows(Container.conn, sql);
 
-    for (Map<String, Object> articleMap : articleListMap) {
-      articles.add(new Article(articleMap));
+    for (Map<String, Object> productMap : productListMap) {
+      products.add(new Product(productMap));
     }
 
-    return articles;
+    return products;
   }
 
   public void increaseHit(int id) {
     SecSql sql = new SecSql();
 
-    sql.append("UPDATE article");
+    sql.append("UPDATE product");
     sql.append("SET hit = hit + 1");
     sql.append("WHERE id = ?", id);
 
