@@ -23,17 +23,17 @@ public class App {
       Connection conn = null;
 
       try {
-        Class.forName("com.mysql.jdbc.Driver");
+        Class.forName("com.mysql.cj.jdbc.Driver");
       } catch (ClassNotFoundException e) {
         System.out.println("예외 : MySQL 드라이버 로딩 실패");
         System.out.println("프로그램을 종료합니다.");
         break;
       }
 
-      String url = "jdbc:mysql://127.0.0.1:3306/text_board?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull";
+      String url = "jdbc:mysql://127.0.0.1:3306/Hwa?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeBehavior=convertToNull";
 
       try {
-        conn = DriverManager.getConnection(url, "sbsst", "sbs123414");
+        conn = DriverManager.getConnection(url, "root", "Dhepddldpdy01!");
 
         Container.conn = conn;
 
@@ -59,13 +59,13 @@ public class App {
   }
 
   private void action(Rq rq, String cmd) {
-    if (rq.getUrlPath().equals("/usr/member/join")) {
+    if (rq.getUrlPath().equals("회원가입")) {
       Container.memberController.join();
-    } else if (rq.getUrlPath().equals("/usr/member/login")) {
+    } else if (rq.getUrlPath().equals("로그인")) {
       Container.memberController.login();
-    } else if (rq.getUrlPath().equals("/usr/member/logout")) {
+    } else if (rq.getUrlPath().equals("로그아웃")) {
       Container.memberController.logout();
-    } else if (rq.getUrlPath().equals("/usr/member/whoami")) {
+    } else if (rq.getUrlPath().equals("내정보")) {
       Container.memberController.whoami();
     } else if (rq.getUrlPath().equals("/usr/article/write")) {
       Container.articleController.write();

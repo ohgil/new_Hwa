@@ -24,3 +24,5 @@ public class Session {
     loginedMember = null;
   }
 }
+
+// 이 클래스는 로그인한 회원 정보를 유지하고, 로그인 여부를 확인하며, 로그인 및 로그아웃을 처리하는 기능을 제공
