@@ -1,6 +1,7 @@
 package org.example;
 
 import org.example.controller.ProductController;
+import org.example.controller.ProductController;
 import org.example.controller.MemberController;
 import org.example.repository.ProductRepository;
 import org.example.repository.MemberRepository;

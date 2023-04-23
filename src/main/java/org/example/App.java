@@ -66,14 +66,16 @@ public class App {
       Container.memberController.whoami();
     } else if (rq.getUrlPath().equals("상품등록")) {
       Container.productController.write();
-    } else if (rq.getUrlPath().equals("상품리스트")) {
-      Container.productController.showList();
-    } else if(rq.getUrlPath().equals("/usr/article/detail")) {
+    } else if (rq.getUrlPath().equals("상품검색")) {
+      Container.productController.search();
       Container.productController.showDetail();
-    } else if (rq.getUrlPath().equals("/usr/article/modify")) {
-      Container.productController.modify();
-    } else if (rq.getUrlPath().equals("/usr/article/delete")) {
-      Container.productController.delete();
+      return;
+    } else if(rq.getUrlPath().equals("상품설명")) {
+//      Container.productController.showDetail();
+    } else if (rq.getUrlPath().equals("상품수정")) {
+//      Container.productController.modify();
+    } else if (rq.getUrlPath().equals("상품삭제")) {
+//      Container.productController.delete();
     } else if (cmd.equals("system exit")) {
       System.out.println("시스템 종료");
       System.exit(0);
