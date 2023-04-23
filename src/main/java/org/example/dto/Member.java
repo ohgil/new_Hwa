@@ -23,4 +23,5 @@ public class Member {
     this.member_birth = (String) memberMap.get("member_birth");
     this.member_gender = (String) memberMap.get("member_gender");
   }
+
 }

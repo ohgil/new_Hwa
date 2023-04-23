@@ -1,7 +1,7 @@
 package org.example.repository;
 
 import org.example.Container;
-import org.example.dto.Article;
+import org.example.dto.Product;
 import org.example.util.DBUtil;
 import org.example.util.SecSql;
 
@@ -9,17 +9,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class ArticleRepository {
-  public int write(int memberId, String title, String body) {
+public class ProductRepository {
+  public int write(String product_name, String product_brand, String product_capacity, String product_price, String product_explanation) {
     SecSql sql = new SecSql();
 
-    sql.append("INSERT INTO article");
-    sql.append(" SET regDate = NOW()");
-    sql.append(", updateDate = NOW()");
-    sql.append(", memberId = ?", memberId);
-    sql.append(", title = ?", title);
-    sql.append(", `body` = ?", body);
-    sql.append(", hit = ?", 0);
+    sql.append("INSERT INTO product");
+    sql.append("SET product_name = ?", product_name);
+    sql.append(", product_brand = ?", product_brand);
+    sql.append(", product_capacity = ?", product_capacity);
+    sql.append(", `product_price` = ?", product_price);
+    sql.append(", product_explanation = ?", product_explanation);
 
     int id = DBUtil.insert(Container.conn, sql);
     return id;
@@ -38,25 +37,26 @@ public class ArticleRepository {
   public void delete(int id) {
     SecSql sql = new SecSql();
 
-    sql.append("DELETE FROM article");
+    sql.append("DELETE FROM product");
     sql.append("WHERE id = ?", id);
 
     DBUtil.delete(Container.conn, sql);
   }
 
-  public void update(int id, String title, String body) {
+  public void update(String product_name, String product_brand, String product_capacity, String product_price, String product_explanation) {
     SecSql sql = new SecSql();
 
-    sql.append("UPDATE article");
-    sql.append("SET updateDate = NOW()");
-    sql.append(", title = ?", title);
-    sql.append(", `body` = ?", body);
-    sql.append("WHERE id = ?", id);
+    sql.append("UPDATE product");
+    sql.append("SET product_name = ?", product_name);
+    sql.append(", product_brand = ?", product_brand);
+    sql.append(", product_capacity = ?", product_capacity);
+    sql.append(", `product_price` = ?", product_price);
+    sql.append(", product_explanation = ?", product_explanation);
 
     DBUtil.update(Container.conn, sql);
   }
 
-  public Article getArticleById(int id) {
+  public Product getArticleById(int id) {
     SecSql sql = new SecSql();
 
     sql.append("SELECT A.*");
@@ -66,16 +66,23 @@ public class ArticleRepository {
     sql.append("ON A.memberId = M.id");
     sql.append("WHERE A.id = ?", id);
 
+    /*sql.append("SELECT A.*");
+    sql.append(", M.name AS extra__writerName");
+    sql.append("FROM article AS A");
+    sql.append("INNER JOIN member AS M");
+    sql.append("ON A.memberId = M.id");
+    sql.append("WHERE A.id = ?", id);*/
+
     Map<String, Object> articleMap = DBUtil.selectRow(Container.conn, sql);
 
     if (articleMap.isEmpty()) {
       return null;
     }
 
-    return new Article(articleMap);
+    return new Product(articleMap);
   }
 
-  public List<Article> getArticles(Map<String, Object> args, String searchKeyword) {
+  public List<Product> getArticles(Map<String, Object> args, String searchKeyword) {
     SecSql sql = new SecSql();
 
     if(args.containsKey("searchKeyword")) {
@@ -94,7 +101,7 @@ public class ArticleRepository {
     }
 
     sql.append("SELECT A.*, M.name AS extra__writerName");
-    sql.append("FROM article AS A");
+    sql.append("FROM product AS A");
     sql.append("INNER JOIN member AS M");
     sql.append("ON A.memberId = M.id");
     if(searchKeyword.length() > 0) {
@@ -106,15 +113,15 @@ public class ArticleRepository {
       sql.append("LIMIT ?, ?", limitFrom, limitTake);
     }
 
-    List<Article> articles = new ArrayList<>();
+    List<Product> products = new ArrayList<>();
 
     List<Map<String, Object>> articleListMap = DBUtil.selectRows(Container.conn, sql);
 
     for (Map<String, Object> articleMap : articleListMap) {
-      articles.add(new Article(articleMap));
+      products.add(new Product(articleMap));
     }
 
-    return articles;
+    return products;
   }
 
   public void increaseHit(int id) {
