@@ -37,8 +37,8 @@ CREATE TABLE `product` (
 	`type_id`	INT	UNSIGNED,
 	`product_name`	VARCHAR(100)	NOT NULL,
 	`product_brand`	VARCHAR(100)	NOT NULL,
-	`product_capacity`	INT	NOT NULL,
-	`product_price`	INT	NOT NULL,
+	`product_capacity`	VARCHAR(100)	NOT NULL,
+	`product_price`	VARCHAR(100)	NOT NULL,
 	`product_explanation`	TEXT	NOT NULL,
 	PRIMARY KEY(id),
 	FOREIGN KEY(member_id) REFERENCES `member`(id),
@@ -274,3 +274,5 @@ SELECT * FROM care;
 
 
 desc `member`;
+
+

@@ -5,7 +5,6 @@ import org.example.dto.Member;
 import org.example.util.DBUtil;
 import org.example.util.SecSql;
 
-import java.sql.Connection;
 import java.util.Map;
 
 public class MemberRepository {

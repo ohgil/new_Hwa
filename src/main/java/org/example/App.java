@@ -1,8 +1,5 @@
 package org.example;
 
-import org.example.controller.ArticleController;
-import org.example.controller.MemberController;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -68,15 +65,15 @@ public class App {
     } else if (rq.getUrlPath().equals("내정보")) {
       Container.memberController.whoami();
     } else if (rq.getUrlPath().equals("/usr/article/write")) {
-      Container.articleController.write();
+      Container.productController.write();
     } else if (rq.getUrlPath().equals("/usr/article/list")) {
-      Container.articleController.showList();
+      Container.productController.showList();
     } else if(rq.getUrlPath().equals("/usr/article/detail")) {
-      Container.articleController.showDetail();
+      Container.productController.showDetail();
     } else if (rq.getUrlPath().equals("/usr/article/modify")) {
-      Container.articleController.modify();
+      Container.productController.modify();
     } else if (rq.getUrlPath().equals("/usr/article/delete")) {
-      Container.articleController.delete();
+      Container.productController.delete();
     } else if (cmd.equals("system exit")) {
       System.out.println("시스템 종료");
       System.exit(0);
