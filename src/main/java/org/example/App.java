@@ -64,9 +64,9 @@ public class App {
       Container.memberController.logout();
     } else if (rq.getUrlPath().equals("내정보")) {
       Container.memberController.whoami();
-    } else if (rq.getUrlPath().equals("/usr/article/write")) {
+    } else if (rq.getUrlPath().equals("상품등록")) {
       Container.productController.write();
-    } else if (rq.getUrlPath().equals("/usr/article/list")) {
+    } else if (rq.getUrlPath().equals("상품리스트")) {
       Container.productController.showList();
     } else if(rq.getUrlPath().equals("/usr/article/detail")) {
       Container.productController.showDetail();

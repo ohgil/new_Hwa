@@ -100,7 +100,7 @@ public class ProductRepository {
       limitTake = (int) args.get("limitTake");
     }
 
-    sql.append("SELECT A.*, M.name AS extra__writerName");
+    sql.append("SELECT A.*, M.`member_name` AS extra__writerName");
     sql.append("FROM product AS A");
     sql.append("INNER JOIN member AS M");
     sql.append("ON A.memberId = M.id");

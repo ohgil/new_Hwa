@@ -7,7 +7,7 @@ import java.util.Map;
 @Data
 public class Product {
   public int id;
-  public int member_id;
+  //public int member_id;
   public int care_id;
   public int type_id;
   public String regDate;
@@ -20,7 +20,7 @@ public class Product {
 
   public Product(Map<String, Object> articleMap) {
     this.id = (int) articleMap.get("id");
-    this.member_id = (int) articleMap.get("memebr_id");
+    //this.member_id = (int) articleMap.get("memebr_id");
     this.care_id = (int) articleMap.get("care_id");
     this.type_id = (int) articleMap.get("type_id");
     this.regDate = (String) articleMap.get("regDate");

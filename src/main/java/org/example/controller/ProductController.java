@@ -111,10 +111,10 @@ public class ProductController {
       return;
     }
 
-    if(article.member_id != Container.session.loginedMemberId) {
-      System.out.println("권한이 없습니다");
-      return;
-    }
+//    if(article.member_id != Container.session.loginedMemberId) {
+//      System.out.println("권한이 없습니다");
+//      return;
+//    }
 
     System.out.printf("상품명  : ");
     String product_name = Container.scanner.nextLine();
@@ -155,10 +155,10 @@ public class ProductController {
       return;
     }
 
-    if(article.member_id != Container.session.loginedMemberId) {
-      System.out.println("권한이 없습니다");
-      return;
-    }
+//    if(article.member_id != Container.session.loginedMemberId) {
+//      System.out.println("권한이 없습니다");
+//      return;
+//    }
 
     productService.delete(id);
 
