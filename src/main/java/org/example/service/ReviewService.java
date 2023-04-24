@@ -18,6 +18,8 @@ public class ReviewService {
         return reviewRepository.write(member_id, review, grade);
     }
 
+
+
     public boolean reviewExists(int id) {
         return reviewRepository.reviewExists(id);
     }
@@ -30,12 +32,13 @@ public class ReviewService {
         reviewRepository.update(member_id, review, grade);
     }
 
+
     public Review getReviewById(int id) {
         return reviewRepository.getReviewById(id);
     }
 
 
-    public List<Review> getForPrintArticleById(int page, int pageItemCount, String searchKeyword) {
+    public List<Review> getForPrintReviewById(int page, int pageItemCount, String searchKeyword) {
         int limitFrom = (page - 1) * pageItemCount;
         int limitTake = pageItemCount;
 

@@ -80,7 +80,7 @@ public class App {
     } else if (rq.getUrlPath().equals("리뷰등록")) { // 작업해주세요 승열이형
       Container.reviewController.write();
     } else if (rq.getUrlPath().equals("리뷰검색")) {// 작업해주세요 승열이형
-      Container.reviewController.showList();
+      Container.reviewController.search();
     } else if (rq.getUrlPath().equals("리뷰수정")) {// 작업해주세요 승열이형
       Container.reviewController.modify();
     } else if (rq.getUrlPath().equals("리뷰삭제")) {// 작업해주세요 승열이형

@@ -10,13 +10,23 @@ import java.util.List;
 import java.util.Map;
 
 public class ReviewRepository {
-    public int write(int member_id, String review, double grade) {
+    public int write(int product_id, String review, double grade) {
         SecSql sql = new SecSql();
 
         sql.append("INSERT INTO review");
-        sql.append("SET member_id = ?", member_id);
+        sql.append("SET product_id = ?", product_id);
         sql.append(", review = ?", review);
         sql.append(", `grade` = ?", grade);
+
+        int id = DBUtil.insert(Container.conn, sql);
+        return id;
+    }
+
+    public int showList(int product_id, String review, double grade) {
+        SecSql sql = new SecSql();
+
+        sql.append("SELECT *");
+        sql.append("FROM review = ? ", product_id);
 
         int id = DBUtil.insert(Container.conn, sql);
         return id;
@@ -44,7 +54,7 @@ public class ReviewRepository {
     public void update(int id, String review, double grade) {
         SecSql sql = new SecSql();
 
-        sql.append("UPDATE article");
+        sql.append("UPDATE review");
         sql.append("SET review = ?", review);
         sql.append(", `grade` = ?", grade);
         sql.append("WHERE id = ?", id);
@@ -55,12 +65,12 @@ public class ReviewRepository {
     public Review getReviewById(int id) {
         SecSql sql = new SecSql();
 
-        sql.append("SELECT A.*");
-        sql.append(", M.name AS extra__writerName");
-        sql.append("FROM review AS A");
-        sql.append("INNER JOIN member AS M");
-        sql.append("ON A.member_id = M.id");
-        sql.append("WHERE A.id = ?", id);
+        sql.append("SELECT review.*");
+        sql.append(", product.id");
+        sql.append("FROM review");
+        sql.append("INNER JOIN product");
+        sql.append("ON review.product_id = product.id");
+        sql.append("WHERE review.id = ?", id);
 
         Map<String, Object> reviewMap = DBUtil.selectRow(Container.conn, sql);
 
@@ -89,14 +99,14 @@ public class ReviewRepository {
             limitTake = (int) args.get("limitTake");
         }
 
-        sql.append("SELECT A.*, M.name AS extra__writerName");
-        sql.append("FROM review AS A");
-        sql.append("INNER JOIN member AS M");
-        sql.append("ON A.member_id = M.id");
+        sql.append("SELECT review.*, product.id");
+        sql.append("FROM review");
+        sql.append("INNER JOIN product");
+        sql.append("ON review.product_id = product.id");
         if(searchKeyword.length() > 0) {
             sql.append("WHERE A.review LIKE CONCAT('%', ?, '%')", searchKeyword);
         }
-        sql.append("ORDER BY A.id DESC");
+        sql.append("ORDER BY review.id DESC");
 
         if(limitFrom != -1) {
             sql.append("LIMIT ?, ?", limitFrom, limitTake);

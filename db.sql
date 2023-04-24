@@ -273,7 +273,16 @@ SELECT * FROM care;
 
 desc `member`;
 
---##SELECT A.*, M.`member_name` AS extra_writerName
---##FROM product AS A
---##INNER JOIN `member` AS M
---##ORDER BY A.id DESC;
+##SELECT A.*, M.`member_name` AS extra_writerName
+##FROM product AS A
+##INNER JOIN `member` AS M
+##ORDER BY A.id DESC;
+
+SELECT * FROM product;
+SELECT * FROM care;
+SELECT * FROM `type`;
+
+SELECT product.id, care.id, `type`.id, product.product_name, product.product_brand, product.product_capacity, product.product_price, product.product_explanation
+FROM product
+JOIN `care` on product.id = `care`.id
+JOIN `type` on product.id = `type`.id;
