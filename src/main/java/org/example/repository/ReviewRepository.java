@@ -1,7 +1,6 @@
 package org.example.repository;
 
 import org.example.Container;
-import org.example.dto.Article;
 import org.example.dto.Review;
 import org.example.util.DBUtil;
 import org.example.util.SecSql;
@@ -15,7 +14,7 @@ public class ReviewRepository {
         SecSql sql = new SecSql();
 
         sql.append("INSERT INTO review");
-        sql.append(", member_id = ?", member_id);
+        sql.append("SET member_id = ?", member_id);
         sql.append(", review = ?", review);
         sql.append(", `grade` = ?", grade);
 
