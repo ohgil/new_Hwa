@@ -30,11 +30,11 @@ public class ProductController {
     }
 // care_id, type_id, product_name, product_brand, product_capacity, product_price, product_explanation
     System.out.println("< 상품 등록 >");
-    System.out.println("== 케어의 타입 ==\n1. skin / 2. body / 3. SPF / 4. hair / 5. cleansing \n== 타입의 타입 ==\n1. combi / 2. dry / 3. oily / 4. sensitive / 5. neuatral");
-    System.out.printf("케어의 타입 : ");
+    System.out.println("== 케어 그룹 ==\n1. skin / 2. body / 3. SPF / 4. hair / 5. cleansing \n== 피부 타입 ==\n1. combi / 2. dry / 3. oily / 4. sensitive / 5. neuatral");
+    System.out.printf("케어 그룹 : ");
     int care_id = Container.scanner.nextInt();
     Container.scanner.nextLine();
-    System.out.printf("타입의 타입 : ");
+    System.out.printf("피부 타입 : ");
     int type_id = Container.scanner.nextInt();
     Container.scanner.nextLine();
     System.out.printf("상품명  : ");
@@ -282,32 +282,42 @@ public class ProductController {
       return;
     }
 
-    int id = rq.getIntParam("id", 0);
+    System.out.printf("삭제할 상품 번호를 입력해주세요: ");
+    int product_id = scanner.nextInt();
+    Container.scanner.nextLine();
 
-    if (id == 0) {
-      System.out.println("id를 올바르게 입력해주세요.");
+    if (!productService.productExists(product_id)) {
+      System.out.printf("%d번 상품은 존재하지 않습니다.\n", product_id);
       return;
     }
 
-    System.out.printf("== %d번 상품 삭제 ==\n", id);
+    SecSql sql = new SecSql();
 
-    Product article = productService.getProductById(id);
+    sql.append("SELECT product.id, `care`.`care`, `type`.`type` AS 'skin_type', product.product_name, product.product_brand, product.product_capacity, product.product_price, product.product_explanation");
+    sql.append("FROM product");
+    sql.append("INNER JOIN `care` on product.care_id = `care`.id");
+    sql.append("INNER JOIN `type` on product.type_id = `type`.id");
+    sql.append("WHERE product.id = ?", product_id);
 
-    boolean articleExists = productService.articleExists(id);
+    Container.session.setSessionProduct(new Product(DBUtil.selectRow(Container.conn, sql)));
 
-    if (articleExists == false) {
-      System.out.printf("%d번 상품은 존재하지 않습니다.\n", id);
-      return;
-    }
+    System.out.println("삭제할 상품 번호의 기존정보는 아래와 같습니다.");
+    showDetail();
 
-//    if(article.member_id != Container.session.loginedMemberId) {
-//      System.out.println("권한이 없습니다");
-//      return;
-//    }
+    System.out.println("정말 삭제하시겠습니까? (Y/N)");
+    System.out.printf(">> ");
+    String answer = scanner.nextLine().trim().toLowerCase();
 
-    productService.delete(id);
+    if (!answer.equals("y")) return;
 
-    System.out.printf("%d번 상품이 삭제되었습니다.\n", id);
+    sql = new SecSql();
+
+    sql.append("DELETE FROM product");
+    sql.append("WHERE product.id = ?", product_id);
+
+    DBUtil.delete(Container.conn, sql);
+
+    System.out.printf("%d번 상품이 삭제되었습니다.\n", product_id);
   }
 
 }
