@@ -74,6 +74,7 @@ public class App {
       Container.productController.showDetail();
     } else if (rq.getUrlPath().equals("상품수정")) {
       Container.productController.modify();
+      return;
     } else if (rq.getUrlPath().equals("상품삭제")) {
       Container.productController.delete();
     } else if (cmd.equals("system exit")) {
