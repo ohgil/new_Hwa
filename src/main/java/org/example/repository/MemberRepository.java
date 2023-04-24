@@ -16,7 +16,7 @@ public class MemberRepository {
     sql.append("FROM `member`");
     sql.append("WHERE member_email = ?", member_email);
 
-    return DBUtil.selectRowBooleanValue(Container.conn, sql);
+    return DBUtil.selectRowBooleanValue(Container.conn, sql); // member_id 로 가입된 정보가 있으면 true 값 반환 없으면 false
   }
 
   public int join(String member_email, String member_pwd, String member_name, String member_birth, String member_gender) {

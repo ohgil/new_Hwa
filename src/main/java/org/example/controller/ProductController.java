@@ -49,7 +49,6 @@ public class ProductController {
     System.out.printf("상품설명  : ");
     String product_explanation = Container.scanner.nextLine();
 
-    int member_email = Container.session.loginedMemberId;
     int id = productService.write(care_id, type_id, product_name, product_brand, product_capacity, product_price, product_explanation);
 
     System.out.printf("%d번 상품이 등록되었습니다.\n", id);
@@ -127,6 +126,13 @@ public class ProductController {
     sql.append("WHERE `care`.`care` = ? && `type`.`type` = ?", careName, skinTypeName);
 
     List<Map<String, Object>> searchedProductMapList = DBUtil.selectRows(Container.conn, sql);
+
+    if(searchedProductMapList.isEmpty()) {
+      System.out.println("검색 결과가 존재하지 않습니다.");
+      Container.session.setSessionProduct(null);
+      return;
+    }
+
     List<Product> searchedProductList = new ArrayList<>();
 
     for (Map<String, Object> searchedProductMap : searchedProductMapList) {
@@ -142,6 +148,7 @@ public class ProductController {
 
     System.out.printf("세부정보를 확인 할 상품번호를 입력해주세요: ");
     int product_id = scanner.nextInt();
+    scanner.nextLine();
     Product searchedProduct = null;
     for (Product product : searchedProductList) {
       if (product.getId() == product_id) {
@@ -151,6 +158,7 @@ public class ProductController {
 
     if (searchedProduct == null) {
       System.out.println("검색되지 않은 상품번호입니다.");
+      return;
     }
 
     Container.session.setSessionProduct(searchedProduct);
@@ -182,6 +190,7 @@ public class ProductController {
 
   public void showDetail() {
     Product product = Container.session.getSessionProduct();
+    if (product == null) return;
     System.out.printf("번호 : %d\n", product.getId());
     // System.out.printf("등록일 : %s\n", article.regDate);
 //    System.out.printf("작성자 : %s\n", article.extra__writerName);
@@ -205,12 +214,12 @@ public class ProductController {
 //      return;
 //    }
 
-    System.out.printf("수정할 상품 번호를 입력해주세요: ");
-    int product_id = scanner.nextInt();
-    Container.scanner.nextLine();
+    System.out.printf("수정할 상품 번호을 입력해주세요: ");
+    int product_id = Container.scanner.nextInt();
+    scanner.nextLine();
 
     if (!productService.productExists(product_id)) {
-      System.out.printf("%d번 상품은 존재하지 않습니다.\n", product_id);
+      System.out.printf("%d 상품은 존재하지 않습니다.\n", product_id);
       return;
     }
 
@@ -233,14 +242,14 @@ public class ProductController {
 
     System.out.println("=".repeat(50)); // if 문 통해서 수정할 내용을 입력한 정보만 수정이 됨.
     System.out.println("수정할 내용을 입력해주세요.");
-    System.out.println("== 케어의 타입 ==\n1. skin / 2. body / 3. SPF / 4. hair / 5. cleansing \n== 타입의 타입 ==\n1. combi / 2. dry / 3. oily / 4. sensitive / 5. neuatral");
-    System.out.printf("케어의 타입 : ");
+    System.out.println("== 케어 그룹 ==\n1. skin / 2. body / 3. SPF / 4. hair / 5. cleansing \n== 피부 타입 ==\n1. combi / 2. dry / 3. oily / 4. sensitive / 5. neuatral");
+    System.out.printf("케어 그룹 : ");
     int care_id = Container.scanner.nextInt();
     if(care_id == -1) {
 //      care_id = Container.session.getSessionProduct().getCare_id();
     }
     Container.scanner.nextLine();
-    System.out.printf("타입의 타입 : ");
+    System.out.printf("피부 타입 : ");
     int type_id = Container.scanner.nextInt();
     Container.scanner.nextLine();
     if(type_id == -1) {
@@ -272,9 +281,9 @@ public class ProductController {
       product_explanation = Container.session.getSessionProduct().getProduct_explanation();
     }
 
-    productService.update(product_id, care_id, type_id, product_name, product_brand, product_capacity, product_price, product_explanation);
+    productService.update(Container.session.getSessionProduct().id, care_id, type_id, product_name, product_brand, product_capacity, product_price, product_explanation);
 
-    System.out.printf("%d번 상품이 수정되었습니다.\n", product_id);
+    System.out.printf("%d번 상품이 수정되었습니다.\n", Container.session.getSessionProduct().id);
   }
 
   public void delete() {

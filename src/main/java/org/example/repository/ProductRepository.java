@@ -151,7 +151,17 @@ public class ProductRepository {
 
     sql.append("SELECT COUNT(*) > 0");
     sql.append("FROM product");
-    sql.append("WHERE id = ?", id);
+    sql.append("WHERE product.id = ?", id);
+
+    return DBUtil.selectRowBooleanValue(Container.conn, sql);
+  }
+
+  public boolean productNameExists(String productName) {
+    SecSql sql = new SecSql();
+
+    sql.append("SELECT COUNT(*) > 0");
+    sql.append("FROM product");
+    sql.append("WHERE `product`.`product_name` Like CONCAT('%', ?, '%')", productName);
 
     return DBUtil.selectRowBooleanValue(Container.conn, sql);
   }

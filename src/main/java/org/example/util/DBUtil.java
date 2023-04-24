@@ -8,9 +8,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DBUtil {
-  public static Map<String, Object> selectRow(Connection dbConn, SecSql sql) {
-    List<Map<String, Object>> rows = selectRows(dbConn, sql);
+public class DBUtil { // 현재 db 연결 정보랑 인텔리제이에서 db 에 날릴 쿼리문을 넘겨주면 실제로 db에 쿼리문을 전송해서 전송한 결과에대한 정보를 가져온다. (상호작용)
+  public static Map<String, Object> selectRow(Connection dbConn, SecSql sql) { // selectRow 는 select 의 결과가 1줄만 있을 때 사용 -> map 받아옴
+    List<Map<String, Object>> rows = selectRows(dbConn, sql); // object 는 최상위 자료형이니까 실제로 사용하려면 수동형변환 필요
 
     if (rows.size() == 0) {
       return new HashMap<>();
@@ -19,8 +19,8 @@ public class DBUtil {
     return rows.get(0);
   }
 
-  public static List<Map<String, Object>> selectRows(Connection dbConn, SecSql sql) throws SQLErrorException {
-    List<Map<String, Object>> rows = new ArrayList<>();
+  public static List<Map<String, Object>> selectRows(Connection dbConn, SecSql sql) throws SQLErrorException { // selectRows 는 select 의 결과가 여러줄만 있을 때 사용 -> list map 받아옴
+    List<Map<String, Object>> rows = new ArrayList<>(); // object 는 최상위 자료형이니까 실제로 사용하려면 수동형변환 필요
 
     PreparedStatement stmt = null;
     ResultSet rs = null;
@@ -95,7 +95,7 @@ public class DBUtil {
     return "";
   }
 
-  public static boolean selectRowBooleanValue(Connection dbConn, SecSql sql) {
+  public static boolean selectRowBooleanValue(Connection dbConn, SecSql sql) { // 특정조건이 만족하는 것들이 1개 이상이 있는지 확인할 때 사용
     Map<String, Object> row = selectRow(dbConn, sql);
 
     for (String key : row.keySet()) {

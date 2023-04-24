@@ -23,7 +23,7 @@ public class MemberController {
 
     // 로그인 아이디 입력
     while (true) {
-      System.out.printf("로그인 아이디(이메일) : ");
+      System.out.printf("로그인 아이디(이메일): ");
       member_email = Container.scanner.nextLine().trim();
 
       if (member_email.length() == 0) {
@@ -117,7 +117,6 @@ public class MemberController {
     System.out.printf("%d번 회원이 등록되었습니다.\n", id);
   }
 
-
   public void login() {
     String member_email;
     String member_pwd;
@@ -139,7 +138,7 @@ public class MemberController {
       return;
     }
 
-    int loginTryMaxCount = 3;
+    int loginTryMaxCount = 3; // 로그인아이디를 친 후 비밀번호 3번 이상 틀리면 비밀번호 확인 후 다음에 시도하라는 문구 나옴
     int loginTryCount = 0;
 
     // 로그인 비밀번호 입력
