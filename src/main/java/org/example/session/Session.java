@@ -1,10 +1,12 @@
 package org.example.session;
 
 import org.example.dto.Member;
+import org.example.dto.Product;
 
 public class Session {
   public int loginedMemberId;
   public Member loginedMember;
+  private Product sessionProduct;
 
   public Session() {
     loginedMemberId = -1;
@@ -22,4 +24,14 @@ public class Session {
     loginedMemberId = -1;
     loginedMember = null;
   }
+
+  public Product getSessionProduct() {
+    return sessionProduct;
+  }
+
+  public void setSessionProduct(Product sessionProduct) {
+    this.sessionProduct = sessionProduct;
+  }
 }
+
+// 이 클래스는 로그인한 회원 정보를 유지하고, 로그인 여부를 확인하며, 로그인 및 로그아웃을 처리하는 기능을 제공

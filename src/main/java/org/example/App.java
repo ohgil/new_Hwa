@@ -20,17 +20,17 @@ public class App {
       Connection conn = null;
 
       try {
-        Class.forName("com.cj.mysql.jdbc.Driver");
+        Class.forName("com.mysql.cj.jdbc.Driver");
       } catch (ClassNotFoundException e) {
         System.out.println("예외 : MySQL 드라이버 로딩 실패");
         System.out.println("프로그램을 종료합니다.");
         break;
       }
 
-      String url = "jdbc:mysql://127.0.0.1:3306/text_board?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull";
+      String url = "jdbc:mysql://127.0.0.1:3306/Hwa?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeBehavior=convertToNull";
 
       try {
-        conn = DriverManager.getConnection(url, "root", "29158080");
+        conn = DriverManager.getConnection(url, "root", "");
 
         Container.conn = conn;
 
@@ -56,24 +56,34 @@ public class App {
   }
 
   private void action(Rq rq, String cmd) {
-    if (rq.getUrlPath().equals("/usr/member/join")) {
+    if (rq.getUrlPath().equals("회원가입")) {
       Container.memberController.join();
-    } else if (rq.getUrlPath().equals("/usr/member/login")) {
+    } else if (rq.getUrlPath().equals("로그인")) {
       Container.memberController.login();
-    } else if (rq.getUrlPath().equals("/usr/member/logout")) {
+    } else if (rq.getUrlPath().equals("로그아웃")) {
       Container.memberController.logout();
-    } else if (rq.getUrlPath().equals("/usr/member/whoami")) {
+    } else if (rq.getUrlPath().equals("내정보")) {
       Container.memberController.whoami();
-    } else if (rq.getUrlPath().equals("/usr/product/write")) {
+    } else if (rq.getUrlPath().equals("상품등록")) {
       Container.productController.write();
-    } else if (rq.getUrlPath().equals("/usr/product/list")) {
-      Container.productController.showList();
-    } else if(rq.getUrlPath().equals("/usr/product/detail")) {
+    } else if (rq.getUrlPath().equals("상품검색")) {
+      Container.productController.search();
       Container.productController.showDetail();
-    } else if (rq.getUrlPath().equals("/usr/product/modify")) {
-      Container.productController.modify();
-    } else if (rq.getUrlPath().equals("/usr/product/delete")) {
-      Container.productController.delete();
+      return;
+    } else if(rq.getUrlPath().equals("상품설명")) {
+//      Container.productController.showDetail();
+    } else if (rq.getUrlPath().equals("상품수정")) {
+//      Container.productController.modify();
+    } else if (rq.getUrlPath().equals("상품삭제")) {
+//      Container.productController.delete();
+    } else if (rq.getUrlPath().equals("리뷰작성")) {
+      Container.reviewController.write();
+    } else if (rq.getUrlPath().equals("리뷰목록")) {
+      Container.reviewController.showList();
+    } else if (rq.getUrlPath().equals("리뷰수정")) {
+      Container.reviewController.modify();
+    } else if (rq.getUrlPath().equals("리뷰삭제")) {
+      Container.reviewController.delete();
     } else if (cmd.equals("system exit")) {
       System.out.println("시스템 종료");
       System.exit(0);

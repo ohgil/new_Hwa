@@ -10,120 +10,132 @@ import java.util.List;
 import java.util.Map;
 
 public class ProductRepository {
-  public int write(int memberId, String title, String body) {
-    SecSql sql = new SecSql();
+    public int write(String product_name, String product_brand, String product_capacity, String product_price, String product_explanation) {
+        SecSql sql = new SecSql();
 
-    sql.append("INSERT INTO article");
-    sql.append(" SET regDate = NOW()");
-    sql.append(", updateDate = NOW()");
-    sql.append(", memberId = ?", memberId);
-    sql.append(", title = ?", title);
-    sql.append(", `body` = ?", body);
-    sql.append(", `hit` = ?", 0);
+        sql.append("INSERT INTO product");
+        sql.append("SET product_name = ?", product_name);
+        sql.append(", product_brand = ?", product_brand);
+        sql.append(", product_capacity = ?", product_capacity);
+        sql.append(", `product_price` = ?", product_price);
+        sql.append(", product_explanation = ?", product_explanation);
 
-    int id = DBUtil.insert(Container.conn, sql);
-    return id;
-  }
+        int id = DBUtil.insert(Container.conn, sql);
+        return id;
+    }
 
-  public boolean productExists(int id) {
-    SecSql sql = new SecSql();
+    public boolean articleExists(int id) {
+        SecSql sql = new SecSql();
 
-    sql.append("SELECT COUNT(*) > 0");
-    sql.append("FROM article");
-    sql.append("WHERE id = ?", id);
+        sql.append("SELECT COUNT(*) > 0");
+        sql.append("FROM article");
+        sql.append("WHERE id = ?", id);
 
-    return DBUtil.selectRowBooleanValue(Container.conn, sql);
-  }
+        return DBUtil.selectRowBooleanValue(Container.conn, sql);
+    }
 
-  public void delete(int id) {
-    SecSql sql = new SecSql();
+    public void delete(int id) {
+        SecSql sql = new SecSql();
 
-    sql.append("DELETE FROM article");
-    sql.append("WHERE id = ?", id);
+        sql.append("DELETE FROM product");
+        sql.append("WHERE id = ?", id);
 
-    DBUtil.delete(Container.conn, sql);
-  }
+        DBUtil.delete(Container.conn, sql);
+    }
 
-  public void update(int id, String title, String body) {
-    SecSql sql = new SecSql();
+    public void update(String product_name, String product_brand, String product_capacity, String product_price, String product_explanation) {
+        SecSql sql = new SecSql();
 
-    sql.append("UPDATE product");
-    sql.append("SET updateDate = NOW()");
-    sql.append(", title = ?", title);
-    sql.append(", `body` = ?", body);
-    sql.append("WHERE id = ?", id);
+        sql.append("UPDATE product");
+        sql.append("SET product_name = ?", product_name);
+        sql.append(", product_brand = ?", product_brand);
+        sql.append(", product_capacity = ?", product_capacity);
+        sql.append(", `product_price` = ?", product_price);
+        sql.append(", product_explanation = ?", product_explanation);
 
-    DBUtil.update(Container.conn, sql);
-  }
+        DBUtil.update(Container.conn, sql);
+    }
 
-  public Product getProductById(int id) {
-    SecSql sql = new SecSql();
+    public Product getProductById(int id) {
+        SecSql sql = new SecSql();
 
-    sql.append("SELECT A.*");
+        sql.append("SELECT product.id, care.id, `type`.id, product.product_name, product.product_brand, product.product_capacity, product.product_price, product.product_explanation");
+        sql.append(" FROM product");
+        sql.append(" JOIN `care` on product.care_id = `care`.id");
+        sql.append(" JOIN `type` on product.type_id = `type`.id");
+
+
+    /*SELECT product.id, care.id, `type`.id, product.product_name, product.product_brand, product.product_capacity, product.product_price, product.product_explanation
+    from product
+    JOIN `care` on product.id = `care`.id;
+    JOIN `type` on product.id = `type`.id;*/
+
+    /*sql.append("SELECT A.*");
     sql.append(", M.name AS extra__writerName");
     sql.append("FROM article AS A");
     sql.append("INNER JOIN member AS M");
     sql.append("ON A.memberId = M.id");
-    sql.append("WHERE A.id = ?", id);
+    sql.append("WHERE A.id = ?", id);*/
 
-    Map<String, Object> productMap = DBUtil.selectRow(Container.conn, sql);
+        Map<String, Object> articleMap = DBUtil.selectRow(Container.conn, sql);
 
-    if (productMap.isEmpty()) {
-      return null;
+        if (articleMap.isEmpty()) {
+            return null;
+        }
+
+        return new Product(articleMap);
     }
 
-    return new Product(productMap);
-  }
+//  public List<Product> getArticles(Map<String, Object> args, String searchKeyword) {
+//    SecSql sql = new SecSql();
+//
+//    if(args.containsKey("searchKeyword")) {
+//      searchKeyword = (String) args.get("searchKeyword");
+//    }
+//
+//    int limitFrom = -1;
+//    int limitTake = -1;
+//
+//    if(args.containsKey("limitFrom")) {
+//      limitFrom = (int) args.get("limitFrom");
+//    }
+//
+//    if(args.containsKey("limitTake")) {
+//      limitTake = (int) args.get("limitTake");
+//    }
+//
+//    sql.append("SELECT A.*, M.`member_name` AS extra__writerName");
+//    sql.append("FROM product AS A");
+//    sql.append("INNER JOIN member AS M");
+//    sql.append("ON A.memberId = M.id");
+//    if(searchKeyword.length() > 0) {
+//      sql.append("WHERE A.title LIKE CONCAT('%', ?, '%')", searchKeyword);
+//    }
+//    sql.append("ORDER BY A.id DESC");
+//
+//    if(limitFrom != -1) {
+//      sql.append("LIMIT ?, ?", limitFrom, limitTake);
+//    }
+//
+//    List<Product> products = new ArrayList<>();
+//
+//    List<Map<String, Object>> articleListMap = DBUtil.selectRows(Container.conn, sql);
+//
+//    for (Map<String, Object> articleMap : articleListMap) {
+//      products.add(new Product(articleMap));
+//    }
+//
+//    return products;
+//  }
 
-  public List<Product> getProducts(Map<String, Object> args, String searchKeyword) {
-    SecSql sql = new SecSql();
 
-    if(args.containsKey("searchKeyword")) {
-      searchKeyword = (String) args.get("searchKeyword");
+    public void increaseHit(int id) {
+        SecSql sql = new SecSql();
+
+        sql.append("UPDATE article");
+        sql.append("SET hit = hit + 1");
+        sql.append("WHERE id = ?", id);
+
+        DBUtil.update(Container.conn, sql);
     }
-
-    int limitFrom = -1;
-    int limitTake = -1;
-
-    if(args.containsKey("limitFrom")) {
-      limitFrom = (int) args.get("limitFrom");
-    }
-
-    if(args.containsKey("limitTake")) {
-      limitTake = (int) args.get("limitTake");
-    }
-
-    sql.append("SELECT A.*, M.name AS extra__writerName");
-    sql.append("FROM product AS A");
-    sql.append("INNER JOIN member AS M");
-    sql.append("ON A.memberId = M.id");
-    if(searchKeyword.length() > 0) {
-      sql.append("WHERE A.title LIKE CONCAT('%', ?, '%')", searchKeyword);
-    }
-    sql.append("ORDER BY A.id DESC");
-
-    if(limitFrom != -1) {
-      sql.append("LIMIT ?, ?", limitFrom, limitTake);
-    }
-
-    List<Product> products = new ArrayList<>();
-
-    List<Map<String, Object>> productListMap = DBUtil.selectRows(Container.conn, sql);
-
-    for (Map<String, Object> productMap : productListMap) {
-      products.add(new Product(productMap));
-    }
-
-    return products;
-  }
-
-  public void increaseHit(int id) {
-    SecSql sql = new SecSql();
-
-    sql.append("UPDATE product");
-    sql.append("SET hit = hit + 1");
-    sql.append("WHERE id = ?", id);
-
-    DBUtil.update(Container.conn, sql);
-  }
 }
