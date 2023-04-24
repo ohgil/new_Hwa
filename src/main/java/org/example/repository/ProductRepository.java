@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static org.example.Container.productRepository;
+
 public class ProductRepository {
   public int write(String product_name, String product_brand, String product_capacity, String product_price, String product_explanation) {
     SecSql sql = new SecSql();
@@ -137,5 +139,9 @@ public class ProductRepository {
     sql.append("WHERE id = ?", id);
 
     DBUtil.update(Container.conn, sql);
+  }
+
+  public boolean productExists(int id) {
+    return productRepository.productExists(id);
   }
 }

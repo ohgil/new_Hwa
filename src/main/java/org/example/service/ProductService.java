@@ -34,6 +34,10 @@ public class ProductService {
     return productRepository.getProductById(id);
   }
 
+  public boolean productExists(int id) {
+    return productRepository.productExists(id);
+  }
+
 //  public void increaseHit(int id) {
 //    productRepository.increaseHit(id);
 //  }

@@ -189,18 +189,32 @@ public class ProductController {
       return;
     }
 
-    int id = rq.getIntParam("id", 0);
+//    int id = rq.getIntParam("id", 0);
+//
+//    if (id == 0) {
+//      System.out.println("id를 올바르게 입력해주세요.");
+//      return;
+//    }
 
-    if (id == 0) {
-      System.out.println("id를 올바르게 입력해주세요.");
-      return;
+    List<Map<String, Object>> modifiedProductMapList = DBUtil.selectRows(Container.conn, sql);
+    List<Product> modifiedProductList = new ArrayList<>();
+
+    for (Map<String, Object> modifiedProductMap : modifiedProductMapList) {
+      modifiedProductList.add(new Product(modifiedProductMap));
     }
 
-    Product article = productService.getProductById(id);
+    System.out.println("수정할 상품 번호를 입력해주세요.");
+    int product_id = scanner.nextInt();
+    for (Product product : modifiedProductList) {
+      if (product.getId() == product_id) {
+        searchedProduct = product;
+      }
 
-    boolean articleExists = productService.articleExists(id);
+    Product product = productService.getProductById(id);
 
-    if (articleExists == false) {
+    boolean productExists = productService.productExists(id);
+
+    if (productExists == false) {
       System.out.printf("%d번 상품은 존재하지 않습니다.\n", id);
       return;
     }
@@ -222,7 +236,7 @@ public class ProductController {
     String product_explanation = Container.scanner.nextLine();
     productService.update(product_name, product_brand, product_capacity, product_price, product_explanation);
 
-    System.out.printf("%d번 게시물이 수정되었습니다.\n", id);
+    System.out.printf("%d번 상품이 수정되었습니다.\n", id);
   }
 
   public void delete() {
@@ -238,14 +252,14 @@ public class ProductController {
       return;
     }
 
-    System.out.printf("== %d번 게시글 삭제 ==\n", id);
+    System.out.printf("== %d번 상품 삭제 ==\n", id);
 
     Product article = productService.getProductById(id);
 
     boolean articleExists = productService.articleExists(id);
 
     if (articleExists == false) {
-      System.out.printf("%d번 게시글은 존재하지 않습니다.\n", id);
+      System.out.printf("%d번 상품은 존재하지 않습니다.\n", id);
       return;
     }
 
@@ -256,7 +270,7 @@ public class ProductController {
 
     productService.delete(id);
 
-    System.out.printf("%d번 게시물이 삭제되었습니다.\n", id);
+    System.out.printf("%d번 상품이 삭제되었습니다.\n", id);
   }
 
 }
