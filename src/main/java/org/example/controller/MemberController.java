@@ -175,7 +175,11 @@ public class MemberController {
       System.out.println("로그인 상태가 아닙니다.");
     }
     else {
-      System.out.println(Container.session.loginedMember.getMember_email());
+      System.out.println("아이디 : " + Container.session.loginedMember.getMember_email());
+      System.out.println("비밀번호 : " + Container.session.loginedMember.getMember_pwd());
+      System.out.println("닉네임 : " + Container.session.loginedMember.getMember_name());
+      System.out.println("생년월일 : " + Container.session.loginedMember.getMember_birth());
+      System.out.println("성별 : " + Container.session.loginedMember.getMember_gender());
     }
   }
 
