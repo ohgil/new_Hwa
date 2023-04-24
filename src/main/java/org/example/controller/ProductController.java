@@ -30,11 +30,11 @@ public class ProductController {
     }
 // care_id, type_id, product_name, product_brand, product_capacity, product_price, product_explanation
     System.out.println("< 상품 등록 >");
-    System.out.println("== 케어의 타입 ==\n1. skin / 2. body / 3. SPF / 4. hair / 5. cleansing \n== 타입의 타입 ==\n1. combi / 2. dry / 3. oily / 4. sensitive / 5. neuatral");
-    System.out.printf("케어의 타입 : ");
+    System.out.println("== 케어 그룹 ==\n1. skin / 2. body / 3. SPF / 4. hair / 5. cleansing \n== 피부 타입 ==\n1. combi / 2. dry / 3. oily / 4. sensitive / 5. neuatral");
+    System.out.printf("케어 그룹 : ");
     int care_id = Container.scanner.nextInt();
     Container.scanner.nextLine();
-    System.out.printf("타입의 타입 : ");
+    System.out.printf("피부 타입 : ");
     int type_id = Container.scanner.nextInt();
     Container.scanner.nextLine();
     System.out.printf("상품명  : ");
