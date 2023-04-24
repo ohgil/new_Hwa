@@ -71,19 +71,12 @@ public class App {
       Container.productController.showDetail();
       return;
     } else if(rq.getUrlPath().equals("상품설명")) {
-//      Container.productController.showDetail();
+      Container.productController.showDetail();
     } else if (rq.getUrlPath().equals("상품수정")) {
-//      Container.productController.modify();
+      Container.productController.modify();
+      return;
     } else if (rq.getUrlPath().equals("상품삭제")) {
-//      Container.productController.delete();
-    } else if (rq.getUrlPath().equals("리뷰작성")) {
-      Container.reviewController.write();
-    } else if (rq.getUrlPath().equals("리뷰목록")) {
-      Container.reviewController.showList();
-    } else if (rq.getUrlPath().equals("리뷰수정")) {
-      Container.reviewController.modify();
-    } else if (rq.getUrlPath().equals("리뷰삭제")) {
-      Container.reviewController.delete();
+      Container.productController.delete();
     } else if (cmd.equals("system exit")) {
       System.out.println("시스템 종료");
       System.exit(0);

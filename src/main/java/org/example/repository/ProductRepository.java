@@ -9,12 +9,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static org.example.Container.productRepository;
+
 public class ProductRepository {
-    public int write(String product_name, String product_brand, String product_capacity, String product_price, String product_explanation) {
+    public int write(int care_id, int type_id, String product_name, String product_brand, String product_capacity, String product_price, String product_explanation) {
         SecSql sql = new SecSql();
 
         sql.append("INSERT INTO product");
-        sql.append("SET product_name = ?", product_name);
+        sql.append("SET care_id = ?", care_id);
+        sql.append(", type_id = ?", type_id);
+        sql.append(", product_name = ?", product_name);
         sql.append(", product_brand = ?", product_brand);
         sql.append(", product_capacity = ?", product_capacity);
         sql.append(", `product_price` = ?", product_price);
@@ -43,15 +47,18 @@ public class ProductRepository {
         DBUtil.delete(Container.conn, sql);
     }
 
-    public void update(String product_name, String product_brand, String product_capacity, String product_price, String product_explanation) {
+    public void update(int product_id, int care_id, int type_id, String product_name, String product_brand, String product_capacity, String product_price, String product_explanation) {
         SecSql sql = new SecSql();
 
         sql.append("UPDATE product");
-        sql.append("SET product_name = ?", product_name);
+        sql.append("SET care_id = ?", care_id);
+        sql.append(", type_id = ?", type_id);
+        sql.append(", product_name = ?", product_name);
         sql.append(", product_brand = ?", product_brand);
         sql.append(", product_capacity = ?", product_capacity);
         sql.append(", `product_price` = ?", product_price);
         sql.append(", product_explanation = ?", product_explanation);
+        sql.append("WHERE id = ?", product_id);
 
         DBUtil.update(Container.conn, sql);
     }
@@ -137,5 +144,15 @@ public class ProductRepository {
         sql.append("WHERE id = ?", id);
 
         DBUtil.update(Container.conn, sql);
+    }
+
+    public boolean productExists(int id) {
+        SecSql sql = new SecSql();
+
+        sql.append("SELECT COUNT(*) > 0");
+        sql.append("FROM product");
+        sql.append("WHERE id = ?", id);
+
+        return DBUtil.selectRowBooleanValue(Container.conn, sql);
     }
 }

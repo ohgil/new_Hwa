@@ -14,8 +14,8 @@ public class ProductService {
     productRepository = Container.productRepository;
   }
 
-  public int write(String product_name, String product_brand, String product_capacity, String product_price, String product_explanation) {
-    return productRepository.write(product_name, product_brand, product_capacity, product_price, product_explanation);
+  public int write(int care_id, int type_id, String product_name, String product_brand, String product_capacity, String product_price, String product_explanation) {
+    return productRepository.write(care_id, type_id, product_name, product_brand, product_capacity, product_price, product_explanation);
   }
 
   public boolean articleExists(int id) {
@@ -26,12 +26,16 @@ public class ProductService {
     productRepository.delete(id);
   }
 
-  public void update(String product_name, String product_brand, String product_capacity, String product_price, String product_explanation) {
-    productRepository.update(product_name, product_brand, product_capacity, product_price, product_explanation);
+  public void update(int product_id, int care_id, int type_id, String product_name, String product_brand, String product_capacity, String product_price, String product_explanation) {
+    productRepository.update(product_id, care_id, type_id, product_name, product_brand, product_capacity, product_price, product_explanation);
   }
 
   public Product getProductById(int id) {
     return productRepository.getProductById(id);
+  }
+
+  public boolean productExists(int id) {
+    return productRepository.productExists(id);
   }
 
 //  public void increaseHit(int id) {
