@@ -30,7 +30,8 @@ public class ProductController {
     }
 // care_id, type_id, product_name, product_brand, product_capacity, product_price, product_explanation
     System.out.println("< 상품 등록 >");
-    System.out.println("== 케어 그룹 ==\n1. skin / 2. body / 3. SPF / 4. hair / 5. cleansing \n== 피부 타입 ==\n1. combi / 2. dry / 3. oily / 4. sensitive / 5. neuatral");
+    System.out.println("== 케어 그룹 ==\n1. skin / 2. body / 3. SPF / 4. hair / 5. cleansing \n" +
+            "== 피부 타입 ==\n1. combi / 2. dry / 3. oily / 4. sensitive / 5. neuatral");
     System.out.printf("케어 그룹 : ");
     int care_id = Container.scanner.nextInt();
     Container.scanner.nextLine();
@@ -54,10 +55,10 @@ public class ProductController {
     System.out.printf("%d번 상품이 등록되었습니다.\n", id);
   }
   public void search() {
-    System.out.println("== 상품 검색 ==");
+    System.out.println("< 상품 검색 >");
 
     // 케어 그룹 검색
-    System.out.println("[케어그룹 리스트]");
+    System.out.println("== 케어그룹 리스트 ==");
     SecSql sql = new SecSql();
     sql.append("SELECT A.care");
     sql.append("FROM care AS A");
@@ -88,7 +89,7 @@ public class ProductController {
     }
 
     // 피부타입 검색
-    System.out.println("[피부타입 리스트]");
+    System.out.println("== 피부타입 리스트 ==");
     sql = new SecSql();
     sql.append("SELECT A.`type` as 'skin_type'");
     sql.append("FROM `type` AS A");
@@ -182,7 +183,7 @@ public class ProductController {
   public void showDetail() {
     Product product = Container.session.getSessionProduct();
     System.out.printf("번호 : %d\n", product.getId());
-   // System.out.printf("등록일 : %s\n", article.regDate);
+    // System.out.printf("등록일 : %s\n", article.regDate);
 //    System.out.printf("작성자 : %s\n", article.extra__writerName);
     System.out.printf("상품명 : %s\n", product.getProduct_name());
     System.out.printf("상품브랜드 : %s\n", product.getProduct_brand());

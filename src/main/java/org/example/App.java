@@ -30,7 +30,7 @@ public class App {
       String url = "jdbc:mysql://127.0.0.1:3306/Hwa?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeBehavior=convertToNull";
 
       try {
-        conn = DriverManager.getConnection(url, "root", "Dhepddldpdy01!");
+        conn = DriverManager.getConnection(url, "root", "");
 
         Container.conn = conn;
 
@@ -77,15 +77,15 @@ public class App {
       return;
     } else if (rq.getUrlPath().equals("상품삭제")) {
       Container.productController.delete();
-    } else if (rq.getUrlPath().equals("리뷰등록")) {
+    } else if (rq.getUrlPath().equals("리뷰등록")) { // 작업해주세요 승열이형
       Container.reviewController.write();
-    } else if (rq.getUrlPath().equals("리뷰목록")) {
+    } else if (rq.getUrlPath().equals("리뷰검색")) {// 작업해주세요 승열이형
       Container.reviewController.showList();
-    } else if (rq.getUrlPath().equals("리뷰수정")) {
+    } else if (rq.getUrlPath().equals("리뷰수정")) {// 작업해주세요 승열이형
       Container.reviewController.modify();
-    } else if (rq.getUrlPath().equals("리뷰삭제")) {
+    } else if (rq.getUrlPath().equals("리뷰삭제")) {// 작업해주세요 승열이형
       Container.reviewController.delete();
-    } else if (cmd.equals("system exit")) {
+    } else if (cmd.equals("종료")) {
       System.out.println("시스템 종료");
       System.exit(0);
     } else {
