@@ -30,7 +30,7 @@ public class App {
       String url = "jdbc:mysql://127.0.0.1:3306/Hwa?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeBehavior=convertToNull";
 
       try {
-        conn = DriverManager.getConnection(url, "root", "");
+        conn = DriverManager.getConnection(url, "root", "Dhepddldpdy01!");
 
         Container.conn = conn;
 
