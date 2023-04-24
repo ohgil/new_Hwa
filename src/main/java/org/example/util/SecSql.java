@@ -55,6 +55,8 @@ public class SecSql {
         stmt.setInt(parameterIndex, (int) data);
       } else if (data instanceof String) {
         stmt.setString(parameterIndex, (String) data);
+      } else if (data instanceof  Double) {
+        stmt.setDouble(parameterIndex, (double) data);
       }
     }
 
