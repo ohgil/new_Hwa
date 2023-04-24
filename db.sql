@@ -32,7 +32,6 @@ CREATE TABLE `member` (
 # member_id, care_id, type_id는 product에서 참조하기 위해 fk로 설정
 CREATE TABLE `product` (
 	`id`	INT	UNSIGNED NOT NULL AUTO_INCREMENT,
-	`member_id`	INT	UNSIGNED,
 	`care_id`	INT	UNSIGNED,
 	`type_id`	INT	UNSIGNED,
 	`product_name`	VARCHAR(100)	NOT NULL,
@@ -41,7 +40,6 @@ CREATE TABLE `product` (
 	`product_price`	VARCHAR(100)	NOT NULL,
 	`product_explanation`	TEXT	NOT NULL,
 	PRIMARY KEY(id),
-	FOREIGN KEY(member_id) REFERENCES `member`(id),
 	FOREIGN KEY(care_id) REFERENCES `care`(id),
 	FOREIGN KEY(type_id) REFERENCES `type`(id)
 );
@@ -275,4 +273,7 @@ SELECT * FROM care;
 
 desc `member`;
 
-
+--##SELECT A.*, M.`member_name` AS extra_writerName
+--##FROM product AS A
+--##INNER JOIN `member` AS M
+--##ORDER BY A.id DESC;

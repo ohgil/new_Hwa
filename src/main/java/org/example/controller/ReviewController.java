@@ -2,9 +2,7 @@ package org.example.controller;
 
 
 import org.example.Container;
-import org.example.dto.Article;
 import org.example.dto.Review;
-import org.example.service.ArticleService;
 import org.example.service.ReviewService;
 
 import java.util.List;
@@ -26,12 +24,12 @@ public class ReviewController {
         }
 
         System.out.println("== 리뷰 ==");
-        System.out.printf("제목 : ");
+        System.out.printf("내용을 입력해주세요 : ");
         String text = Container.scanner.nextLine();
-        System.out.printf("내용 : ");
+        System.out.printf("평점 : ");
         double grade = Double.parseDouble(Container.scanner.nextLine());
 
-        int member_id = Container.session.loginedMemberId;
+        int member_id = Container.session.loginedMemberId+1;
         int id = reviewService.write(member_id, text, grade);
 
         System.out.printf("%d번 리뷰가 등록되었습니다.\n", id);
@@ -59,14 +57,14 @@ public class ReviewController {
         }
     }
 
-    public void showDetail() {
-        int id = rq.getIntParam("id", 0);
-
-        if (id == 0) {
-            System.out.println("id를 올바르게 입력해주세요.");
-            return;
-        }
-    }
+//    public void showDetail() {
+//        int id = rq.getIntParam("id", 0);
+//
+//        if (id == 0) {
+//            System.out.println("id를 올바르게 입력해주세요.");
+//            return;
+//        }
+//    }
 
     public void modify() {
         if(Container.session.isLogined() == false) {
@@ -136,7 +134,7 @@ public class ReviewController {
 
         reviewService.delete(id);
 
-        System.out.printf("%d번 게시물이 삭제되었습니다.\n", id);
+        System.out.printf("%d번 리뷰가 삭제되었습니다.\n", id);
     }
 
 }
