@@ -16,6 +16,7 @@ public class Member {
 
 
   public Member(Map<String, Object> memberMap) {
+    this.id = (int) memberMap.get("id");
     this.member_email = (String) memberMap.get("member_email");
     this.member_pwd = (String) memberMap.get("member_pwd");
     this.member_pwd_confirm = (String) memberMap.get("member_pwd_confirm");

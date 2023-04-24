@@ -29,7 +29,7 @@ public class ReviewController {
         System.out.printf("평점 : ");
         double grade = Double.parseDouble(Container.scanner.nextLine());
 
-        int member_id = Container.session.loginedMemberId+1;
+        int member_id = Container.session.loginedMemberId;
         int id = reviewService.write(member_id, text, grade);
 
         System.out.printf("%d번 리뷰가 등록되었습니다.\n", id);
