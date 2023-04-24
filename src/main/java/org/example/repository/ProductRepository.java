@@ -56,15 +56,19 @@ public class ProductRepository {
         DBUtil.update(Container.conn, sql);
     }
 
-    public Product getArticleById(int id) {
+    public Product getProductById(int id) {
         SecSql sql = new SecSql();
 
-        sql.append("SELECT A.*");
-        sql.append(", M.name AS extra__writerName");
-        sql.append("FROM article AS A");
-        sql.append("INNER JOIN member AS M");
-        sql.append("ON A.memberId = M.id");
-        sql.append("WHERE A.id = ?", id);
+        sql.append("SELECT product.id, care.id, `type`.id, product.product_name, product.product_brand, product.product_capacity, product.product_price, product.product_explanation");
+        sql.append(" FROM product");
+        sql.append(" JOIN `care` on product.care_id = `care`.id");
+        sql.append(" JOIN `type` on product.type_id = `type`.id");
+
+
+    /*SELECT product.id, care.id, `type`.id, product.product_name, product.product_brand, product.product_capacity, product.product_price, product.product_explanation
+    from product
+    JOIN `care` on product.id = `care`.id;
+    JOIN `type` on product.id = `type`.id;*/
 
     /*sql.append("SELECT A.*");
     sql.append(", M.name AS extra__writerName");
@@ -82,47 +86,48 @@ public class ProductRepository {
         return new Product(articleMap);
     }
 
-    public List<Product> getArticles(Map<String, Object> args, String searchKeyword) {
-        SecSql sql = new SecSql();
+//  public List<Product> getArticles(Map<String, Object> args, String searchKeyword) {
+//    SecSql sql = new SecSql();
+//
+//    if(args.containsKey("searchKeyword")) {
+//      searchKeyword = (String) args.get("searchKeyword");
+//    }
+//
+//    int limitFrom = -1;
+//    int limitTake = -1;
+//
+//    if(args.containsKey("limitFrom")) {
+//      limitFrom = (int) args.get("limitFrom");
+//    }
+//
+//    if(args.containsKey("limitTake")) {
+//      limitTake = (int) args.get("limitTake");
+//    }
+//
+//    sql.append("SELECT A.*, M.`member_name` AS extra__writerName");
+//    sql.append("FROM product AS A");
+//    sql.append("INNER JOIN member AS M");
+//    sql.append("ON A.memberId = M.id");
+//    if(searchKeyword.length() > 0) {
+//      sql.append("WHERE A.title LIKE CONCAT('%', ?, '%')", searchKeyword);
+//    }
+//    sql.append("ORDER BY A.id DESC");
+//
+//    if(limitFrom != -1) {
+//      sql.append("LIMIT ?, ?", limitFrom, limitTake);
+//    }
+//
+//    List<Product> products = new ArrayList<>();
+//
+//    List<Map<String, Object>> articleListMap = DBUtil.selectRows(Container.conn, sql);
+//
+//    for (Map<String, Object> articleMap : articleListMap) {
+//      products.add(new Product(articleMap));
+//    }
+//
+//    return products;
+//  }
 
-        if(args.containsKey("searchKeyword")) {
-            searchKeyword = (String) args.get("searchKeyword");
-        }
-
-        int limitFrom = -1;
-        int limitTake = -1;
-
-        if(args.containsKey("limitFrom")) {
-            limitFrom = (int) args.get("limitFrom");
-        }
-
-        if(args.containsKey("limitTake")) {
-            limitTake = (int) args.get("limitTake");
-        }
-
-        sql.append("SELECT A.*, M.name AS extra__writerName");
-        sql.append("FROM product AS A");
-        sql.append("INNER JOIN member AS M");
-        sql.append("ON A.memberId = M.id");
-        if(searchKeyword.length() > 0) {
-            sql.append("WHERE A.title LIKE CONCAT('%', ?, '%')", searchKeyword);
-        }
-        sql.append("ORDER BY A.id DESC");
-
-        if(limitFrom != -1) {
-            sql.append("LIMIT ?, ?", limitFrom, limitTake);
-        }
-
-        List<Product> products = new ArrayList<>();
-
-        List<Map<String, Object>> articleListMap = DBUtil.selectRows(Container.conn, sql);
-
-        for (Map<String, Object> articleMap : articleListMap) {
-            products.add(new Product(articleMap));
-        }
-
-        return products;
-    }
 
     public void increaseHit(int id) {
         SecSql sql = new SecSql();

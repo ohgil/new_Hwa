@@ -30,21 +30,21 @@ public class ProductService {
     productRepository.update(product_name, product_brand, product_capacity, product_price, product_explanation);
   }
 
-  public Product getArticleById(int id) {
-    return productRepository.getArticleById(id);
+  public Product getProductById(int id) {
+    return productRepository.getProductById(id);
   }
 
-  public void increaseHit(int id) {
-    productRepository.increaseHit(id);
-  }
+//  public void increaseHit(int id) {
+//    productRepository.increaseHit(id);
+//  }
 
-  public List<Product> getForPrintArticleById(int page, int pageItemCount, String searchKeyword) {
-    int limitFrom = (page - 1) * pageItemCount;
-    int limitTake = pageItemCount;
-
-    Map<String, Object> args = new HashMap<>();
-    args.put("limitFrom", limitFrom);
-    args.put("limitTake", limitTake);
-    return productRepository.getArticles(args, searchKeyword);
-  }
+//  public List<Product> getForPrintArticleById(int page, int pageItemCount, String searchKeyword) {
+//    int limitFrom = (page - 1) * pageItemCount;
+//    int limitTake = pageItemCount;
+//
+//    Map<String, Object> args = new HashMap<>();
+//    args.put("limitFrom", limitFrom);
+//    args.put("limitTake", limitTake);
+//    return productRepository.getArticles(args, searchKeyword);
+//  }
 }

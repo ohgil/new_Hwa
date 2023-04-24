@@ -66,14 +66,16 @@ public class App {
       Container.memberController.whoami();
     } else if (rq.getUrlPath().equals("상품등록")) {
       Container.productController.write();
-    } else if (rq.getUrlPath().equals("상품리스트")) {
-      Container.productController.showList();
-    } else if(rq.getUrlPath().equals("상품설명")) {
+    } else if (rq.getUrlPath().equals("상품검색")) {
+      Container.productController.search();
       Container.productController.showDetail();
+      return;
+    } else if(rq.getUrlPath().equals("상품설명")) {
+//      Container.productController.showDetail();
     } else if (rq.getUrlPath().equals("상품수정")) {
-      Container.productController.modify();
+//      Container.productController.modify();
     } else if (rq.getUrlPath().equals("상품삭제")) {
-      Container.productController.delete();
+//      Container.productController.delete();
     } else if (rq.getUrlPath().equals("리뷰작성")) {
       Container.reviewController.write();
     } else if (rq.getUrlPath().equals("리뷰목록")) {

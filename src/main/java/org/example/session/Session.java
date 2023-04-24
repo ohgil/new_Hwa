@@ -1,10 +1,12 @@
 package org.example.session;
 
 import org.example.dto.Member;
+import org.example.dto.Product;
 
 public class Session {
   public int loginedMemberId;
   public Member loginedMember;
+  private Product sessionProduct;
 
   public Session() {
     loginedMemberId = -1;
@@ -21,6 +23,14 @@ public class Session {
   public void logout() {
     loginedMemberId = -1;
     loginedMember = null;
+  }
+
+  public Product getSessionProduct() {
+    return sessionProduct;
+  }
+
+  public void setSessionProduct(Product sessionProduct) {
+    this.sessionProduct = sessionProduct;
   }
 }
 

@@ -1,6 +1,7 @@
 package org.example;
 
 import org.example.controller.ProductController;
+import org.example.controller.ProductController;
 import org.example.controller.MemberController;
 import org.example.controller.ReviewController;
 import org.example.repository.ProductRepository;
@@ -45,6 +46,7 @@ public class Container {
     productController = new ProductController();
     memberController = new MemberController();
     reviewController = new ReviewController();
+
 
     scanner = new Scanner(System.in);
     session = new Session();
