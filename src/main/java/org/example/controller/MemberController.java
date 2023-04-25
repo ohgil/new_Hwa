@@ -102,7 +102,7 @@ public class MemberController {
 
     // 성별 입력
     while (true) {
-      System.out.printf("성별 : ");
+      System.out.printf("성별(남 / 여) : ");
       member_gender = Container.scanner.nextLine().trim();
 
       if (member_gender.length() == 0) {
@@ -162,9 +162,9 @@ public class MemberController {
         continue;
       }
 
-      System.out.printf("\"%s\"님 환영합니다.\n", member.getMember_name());
+      System.out.printf("\"%s\"님 환영합니다! 원하는 것 마음껏 이용하세요~!\n", member.getMember_name());
 
-      System.out.printf("\"%s\"님 ! 로그인 이후 사용 가능 한 기능목록 입니다. \n 1. 내정보 \n 2. 상품등록 \n 3. 상품검색 \n 4. 상품설명 \n 5. 상품수정 \n 6. 상품삭제 \n 7. 리뷰등록 \n 8. 리뷰검색 \n 9. 리뷰수정 \n 10. 리뷰삭제\n", member.getMember_name());
+      System.out.printf("\"%s\"님! 로그인 이후 사용 가능 한 기능목록 입니다. \n 1. 내정보 \n 2. 상품등록 \n 3. 상품검색 \n 4. 상품설명 \n 5. 상품수정 \n 6. 상품삭제 \n 7. 리뷰등록 \n 8. 리뷰검색 \n 9. 리뷰수정 \n 10. 리뷰삭제\n", member.getMember_name());
       Container.session.login(member);
 
       break;
