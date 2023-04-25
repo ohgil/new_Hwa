@@ -10,7 +10,7 @@ public class Review {
     public int member_id;
     public int product_id;
     public String review;
-    public double grade;
+    public int grade;
     public String extra__writerName;
 
     public Review(Map<String, Object> reviewMap) {
@@ -18,7 +18,7 @@ public class Review {
         this.member_id = (int) reviewMap.get("member_id");
         this.product_id = (int) reviewMap.get("product_id");
         this.review = (String) reviewMap.get("review");
-        this.grade = (double) reviewMap.get("grade");
+        this.grade = (int) reviewMap.get("grade");
         if(reviewMap.get("extra__writerName") != null) {
             this.extra__writerName = (String)reviewMap.get("extra__writerName");
         }

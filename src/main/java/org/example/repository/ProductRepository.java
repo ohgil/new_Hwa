@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static org.example.Container.productRepository;
 
 public class ProductRepository {
   public int write(int care_id, int type_id, String product_name, String product_brand, String product_capacity, String product_price, String product_explanation) {

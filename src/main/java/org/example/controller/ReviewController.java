@@ -2,9 +2,7 @@ package org.example.controller;
 
 
 import org.example.Container;
-import org.example.dto.Product;
 import org.example.dto.Review;
-import org.example.service.ProductService;
 import org.example.service.ReviewService;
 import org.example.util.DBUtil;
 import org.example.util.SecSql;
@@ -18,7 +16,7 @@ import static org.example.Container.scanner;
 
 public class ReviewController {
 
-    private ReviewService reviewService;
+    private final ReviewService reviewService;
 
     public ReviewController() {
         reviewService = Container.reviewService;
@@ -30,17 +28,16 @@ public class ReviewController {
             System.out.println("로그인 후 이용해주세요.");
             return;
         }
-// care_id, type_id, product_name, product_brand, product_capacity, product_price, product_explanation
+
         System.out.println("< 리뷰 등록 >");
-        System.out.printf("상품번호 : ");
+        System.out.printf("상품 번호 : ");
         int product_id = Container.scanner.nextInt();
         Container.scanner.nextLine();
         System.out.printf("리뷰 내용  : ");
         String review = Container.scanner.nextLine();
-        System.out.printf("평점  : ");
-        Double grade = Double.valueOf(Container.scanner.nextLine());
+        System.out.printf("별점  : ");
+        int grade = Container.scanner.nextInt();
 
-        int member_email = Container.session.loginedMemberId;
         int id = reviewService.write(product_id, review, grade);
 
         System.out.printf("%d번 리뷰가 등록되었습니다.\n", id);
@@ -48,39 +45,90 @@ public class ReviewController {
 
     public void search() {
         System.out.println("< 리뷰 검색 >");
-        System.out.print("검색어 : ");
-        String word = Container.scanner.nextLine();
 
+        System.out.println("== 리뷰 리스트 ==");
         SecSql sql = new SecSql();
+        sql.append("SELECT review");
+        sql.append("FROM review");
 
-        sql.append("SELECT * FROM review");
-        sql.append("WHERE review.review");
-        sql.append("LIKE 'word%' = ?", word);
+        List<Map<String, Object>> reviewList = DBUtil.selectRows(Container.conn, sql);
 
-//        List<Map<String, Object>> searchedReviewMapList = DBUtil.selectRows(Container.conn, sql);
-//        List<Review> searchedReviewList = new ArrayList<>();
+        for (int i = 0; i < reviewList.size(); i++) {
+            System.out.printf("%s", reviewList.get(i).get("review"));
+            if (i < reviewList.size() - 1) System.out.printf(", ");
+            if (i == reviewList.size() - 1) System.out.printf("\n");
+        }
 
-//       for (Map<String, Object> searchedReviewMap : searchedReviewMapList) {
-//            searchedReviewList.add(new Review(searchedReviewMap));
-//        }
+        String reviewName;
 
+        while (true) {
+            System.out.printf("검색어를 입력해주세요: ");
+            reviewName = Container.scanner.nextLine().trim();
 
-        System.out.printf("%s에 대한 검색 결과...\n\n", word);
-        System.out.println("상품번호 / 리뷰내용 / 평점");
+            boolean isInReviewList = false;
+
+            for (Map<String, Object> reviewMap : reviewList) {
+                if (reviewName.equals(reviewMap.get("review"))) isInReviewList = true;
+            }
+
+            if (isInReviewList) break;
+
+            System.out.println("다시 입력해주세요");
+        }
+
+        sql = new SecSql();
+        sql.append("SELECT * ");
+        sql.append("FROM review");
+        sql.append("WHERE review = ?;", reviewName);
+
+        List<Map<String, Object>> searchedReviewMapList = DBUtil.selectRows(Container.conn, sql);
+
+        if(searchedReviewMapList.isEmpty()) {
+            System.out.println("검색 결과가 존재하지 않습니다.");
+            Container.session.setSessionReview(null);
+            return;
+        }
+
+        List<Review> searchedReivewList = new ArrayList<>();
+
+        for (Map<String, Object> searchedReviewMap : searchedReviewMapList) {
+            searchedReivewList.add(new Review(searchedReviewMap));
+        }
+
+        System.out.printf("%s에 대한 검색 결과...\n\n", reviewName);
+        System.out.println("상품번호 / 리뷰내용 / 별점");
         System.out.println("-".repeat(60));
-        System.out.println("2 / good / 3.5");
-//        for (Review review : searchedReviewList) {
-//            System.out.printf("%d / %s / %f\n", review.getProduct_id(), review.getReview(), review.getGrade());
-//    }
+        for (Review review : searchedReivewList) {
+            System.out.printf("%d / %s / %d \n", review.getProduct_id(), review.getReview(), review.getGrade());
+        }
 
+        System.out.printf("세부정보를 확인 할 상품번호를 입력해주세요: ");
+        int product_id = scanner.nextInt();
+        scanner.nextLine();
+        Review searchedReview = null;
+        for (Review review : searchedReivewList) {
+            if (review.getId() == product_id) {
+                searchedReview = review;
+            }
+        }
+
+        if (searchedReview == null) {
+            System.out.println("검색되지 않은 상품번호입니다.");
+            return;
+        }
+
+        Container.session.setSessionReview(searchedReview);
     }
-
-
-    public void show() {
+    public void showDetail() {
         Review review = Container.session.getSessionReview();
-        System.out.printf("상품 번호 : %d\n", review.getProduct_id());
-        System.out.printf("리뷰 내용 : %s\n", review.getReview());
-        System.out.printf("별점 : %.1f\n", review.getGrade());
+        if (review == null) return;
+        System.out.printf("번호 : %d\n", review.getId());
+        // System.out.printf("등록일 : %s\n", article.regDate);
+//    System.out.printf("작성자 : %s\n", article.extra__writerName);
+        System.out.printf("작성자 : %d\n", review.getMember_id());
+        System.out.printf("상품번호 : %d\n", review.getProduct_id());
+        System.out.printf("리뷰내용 : %s\n", review.getReview());
+        System.out.printf("별점 : %d\n", review.getGrade());
     }
 
     public void modify() {
@@ -89,50 +137,37 @@ public class ReviewController {
             return;
         }
 
-
-        System.out.printf("수정할 리뷰의 상품 번호를 입력해주세요: ");
-        int product_id = scanner.nextInt();
-        Container.scanner.nextLine();
-
-        if (!reviewService.reviewExists(product_id)) {
-            System.out.printf("%d번 리뷰는 존재하지 않습니다.\n", product_id);
-            return;
-        }
+        System.out.printf("수정할 리뷰 번호을 입력해주세요: ");
+        int product_id = Container.scanner.nextInt();
 
         SecSql sql = new SecSql();
 
         sql.append("SELECT *");
         sql.append("FROM review");
+        sql.append("WHERE product_id = ?;", product_id);
 
         Container.session.setSessionReview(new Review(DBUtil.selectRow(Container.conn, sql)));
 
-        System.out.println("수정할 리뷰의 기존정보는 아래와 같습니다.");
-        show();
+        System.out.println("수정할 리뷰 번호의 기존정보는 아래와 같습니다.");
+        showDetail();
 
-        System.out.println("=".repeat(50));
+        System.out.println("=".repeat(50)); // if 문 통해서 수정할 내용을 입력한 정보만 수정이 됨.
         System.out.println("수정할 내용을 입력해주세요.");
-
         System.out.printf("리뷰 내용: ");
         String review = Container.scanner.nextLine().trim();
         if (review.length() == 0) {
             review = Container.session.getSessionReview().getReview();
         }
+
         System.out.printf("별점: ");
-        String grade = Container.scanner.nextLine().trim();
-        if (grade.length() == 0) {
-            grade = String.valueOf(Container.session.getSessionReview().getGrade());
+        int grade = Container.scanner.nextInt();
+        if (grade == 0) {
+            grade = Container.session.getSessionReview().getGrade();
         }
 
-        reviewService.update(product_id, review, Double.parseDouble(grade));
+        reviewService.update(product_id, review, grade);
 
-        System.out.printf("%d번 상품이 수정되었습니다.\n", product_id);
-    }
-
-    public void showList() {
-        Review review = Container.session.getSessionReview();
-        System.out.printf("상품번호 : %s\n", review.getProduct_id());
-        System.out.printf("리뷰내용 : %s\n", review.getReview());
-        System.out.printf("별점 :  %.1f\n", review.getGrade());
+        System.out.printf("%d번 리뷰가 수정되었습니다.\n", Container.session.getSessionReview().id);
     }
 
     public void delete() {
@@ -142,11 +177,11 @@ public class ReviewController {
         }
 
         System.out.printf("삭제할 리뷰 번호를 입력해주세요: ");
-        int product_id = scanner.nextInt();
+        int review_id = scanner.nextInt();
         Container.scanner.nextLine();
 
-        if (!reviewService.reviewExists(product_id)) {
-            System.out.printf("%d번 리뷰는 존재하지 않습니다.\n", product_id);
+        if (!reviewService.reviewExists(review_id)) {
+            System.out.printf("%d번 리뷰은 존재하지 않습니다.\n", review_id);
             return;
         }
 
@@ -154,11 +189,12 @@ public class ReviewController {
 
         sql.append("SELECT *");
         sql.append("FROM review");
+        sql.append("WHERE review.id = ?;", review_id);
 
         Container.session.setSessionReview(new Review(DBUtil.selectRow(Container.conn, sql)));
 
         System.out.println("삭제할 리뷰의 기존정보는 아래와 같습니다.");
-        showList();
+        showDetail();
 
         System.out.println("정말 삭제하시겠습니까? (Y/N)");
         System.out.printf(">> ");
@@ -169,11 +205,11 @@ public class ReviewController {
         sql = new SecSql();
 
         sql.append("DELETE FROM review");
-        sql.append("WHERE review.product_id = ?", product_id);
+        sql.append("WHERE review.id = ?;", review_id);
 
         DBUtil.delete(Container.conn, sql);
 
-        System.out.printf("%d번 리뷰가 삭제되었습니다.\n", product_id);
+        System.out.printf("%d번 상품이 삭제되었습니다.\n", review_id);
     }
 
 }
