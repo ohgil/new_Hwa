@@ -161,6 +161,7 @@ public class ReviewController {
 
         System.out.printf("별점: ");
         int grade = Container.scanner.nextInt();
+        Container.scanner.nextLine();
         if (grade == 0) {
             grade = Container.session.getSessionReview().getGrade();
         }

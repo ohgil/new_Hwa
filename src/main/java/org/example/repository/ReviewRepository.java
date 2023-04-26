@@ -15,7 +15,8 @@ public class ReviewRepository {
         SecSql sql = new SecSql();
 
         sql.append("INSERT INTO review");
-        sql.append("SET product_id = ?", product_id);
+        sql.append("SET member_id = ?", Container.session.loginedMember.getId());
+        sql.append(", product_id = ?", product_id);
         sql.append(", review = ?", review);
         sql.append(", grade = ?", grade);
 
