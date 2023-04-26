@@ -139,7 +139,7 @@ public class ReviewController {
 
         System.out.printf("수정할 리뷰 번호을 입력해주세요: ");
         int product_id = Container.scanner.nextInt();
-
+        Container.scanner.nextLine();
         SecSql sql = new SecSql();
 
         sql.append("SELECT *");
@@ -211,5 +211,6 @@ public class ReviewController {
 
         System.out.printf("%d번 상품이 삭제되었습니다.\n", review_id);
     }
+
 
 }

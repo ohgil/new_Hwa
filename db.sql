@@ -4,17 +4,20 @@ DROP DATABASE IF EXISTS `Hwa`;
 CREATE DATABASE `Hwa`;
 # 데이터베이스 화요일 실행
 USE `Hwa`;
+
 # care 테이블 생성 / id 정수, 음수 없이, 공백 없이, 값 자동 증가 + pk로 설정
 CREATE TABLE `care` (
 	`id`	INT	UNSIGNED NOT NULL AUTO_INCREMENT,
 	`care`	VARCHAR(10)	NOT NULL,
 	PRIMARY KEY(id)
 );
+
 CREATE TABLE `type` (
 	`id`	INT	UNSIGNED NOT NULL AUTO_INCREMENT,
 	`type`	VARCHAR(10)	NOT NULL,
 	PRIMARY KEY(id)
 );
+
 CREATE TABLE `member` (
 	`id`	INT	UNSIGNED NOT NULL AUTO_INCREMENT,
 	`member_email`	VARCHAR(40)	NOT NULL,
@@ -24,43 +27,47 @@ CREATE TABLE `member` (
 	`member_name`	VARCHAR(40)	NOT NULL,
 	PRIMARY KEY(id)
 );
+
+
 # member_id, care_id, type_id는 product에서 참조하기 위해 fk로 설정
 CREATE TABLE `product` (
 	`id`	INT	UNSIGNED NOT NULL AUTO_INCREMENT,
-	`member_id`	INT	UNSIGNED,
 	`care_id`	INT	UNSIGNED,
 	`type_id`	INT	UNSIGNED,
 	`product_name`	VARCHAR(100)	NOT NULL,
 	`product_brand`	VARCHAR(100)	NOT NULL,
-	`product_capacity`	INT	NOT NULL,
-	`product_price`	INT	NOT NULL,
+	`product_capacity`	VARCHAR(100)	NOT NULL,
+	`product_price`	VARCHAR(100)	NOT NULL,
 	`product_explanation`	TEXT	NOT NULL,
 	PRIMARY KEY(id),
-	FOREIGN KEY(member_id) REFERENCES `member`(id),
 	FOREIGN KEY(care_id) REFERENCES `care`(id),
 	FOREIGN KEY(type_id) REFERENCES `type`(id)
 );
+
 CREATE TABLE `review` (
 	`id`	INT	UNSIGNED NOT NULL  AUTO_INCREMENT,
 	`member_id`	INT	UNSIGNED,
 	`product_id` INT UNSIGNED,
 	`review`	TEXT	NULL,
-	`grade`	DOUBLE	NULL,
+	`grade`	INT	NULL,
 	PRIMARY KEY(id),
 	FOREIGN KEY(member_id) REFERENCES `member`(id),
 	FOREIGN KEY(product_id) REFERENCES `product`(id)
 );
+
 # care 테이블에 값 입력
 INSERT INTO `care` SET care = 'skin';
 INSERT INTO `care` SET care = 'body';
 INSERT INTO `care` SET care = 'SPF';
 INSERT INTO `care` SET care = 'hair';
 INSERT INTO `care` SET care = 'cleansing';
+
 INSERT INTO `type` SET `type` = 'combi';
 INSERT INTO `type` SET `type` = 'dry';
 INSERT INTO `type` SET `type` = 'oily';
 INSERT INTO `type` SET `type` = 'sensitive';
 INSERT INTO `type` SET `type` = 'neuatral';
+
 INSERT INTO product ( care_id, type_id, product_name, product_brand, product_capacity, product_price, product_explanation ) VALUES ( '1','1','1025 독도 로션','라운드랩','200','20000', 'product_explanation');
 INSERT INTO product ( care_id, type_id, product_name, product_brand, product_capacity, product_price, product_explanation ) VALUES ( '1','1','1025 독도 토너','라운드랩','200','15000', 'product_explanation');
 INSERT INTO product ( care_id, type_id, product_name, product_brand, product_capacity, product_price, product_explanation ) VALUES ( '1','1','E 로션','아토팜','300','50000', 'product_explanation');
@@ -221,6 +228,7 @@ INSERT INTO product ( care_id, type_id, product_name, product_brand, product_cap
 INSERT INTO product ( care_id, type_id, product_name, product_brand, product_capacity, product_price, product_explanation ) VALUES ( '5','5','세이프 미 릴리프 모이스처 클렌징 폼','메이크프렘','150','16000', 'product_explanation');
 INSERT INTO product ( care_id, type_id, product_name, product_brand, product_capacity, product_price, product_explanation ) VALUES ( '5','5','아쿠아 라이스 약산성 클렌징폼','에스네이처','160','19000', 'product_explanation');
 INSERT INTO product ( care_id, type_id, product_name, product_brand, product_capacity, product_price, product_explanation ) VALUES ( '5','5','퓨어&딥 클렌징 폼','마녀공장','100','14000', 'product_explanation');
+
 INSERT INTO `member` (member_email , member_pwd, member_birth, member_gender, member_name) VALUES ( 'abc100@gmail.com', '100', '11', '1', '가');
 INSERT INTO `member` (member_email , member_pwd, member_birth, member_gender, member_name) VALUES ( 'abc200@gmail.com', '200', '22', '2', '나');
 INSERT INTO `member` (member_email , member_pwd, member_birth, member_gender, member_name) VALUES ( 'abc300@gmail.com', '300', '33', '1', '다');
@@ -230,31 +238,51 @@ INSERT INTO `member` (member_email , member_pwd, member_birth, member_gender, me
 INSERT INTO `member` (member_email , member_pwd, member_birth, member_gender, member_name) VALUES ( 'abc700@gmail.com', '700', '77', '1', '사');
 INSERT INTO `member` (member_email , member_pwd, member_birth, member_gender, member_name) VALUES ( 'abc800@gmail.com', '800', '88', '1', '아');
 INSERT INTO `member` (member_email , member_pwd, member_birth, member_gender, member_name) VALUES ( 'abc900@gmail.com', '900', '99', '1', '자');
-INSERT INTO review ( member_id, product_id, review, grade ) VALUES ( '1', '1', '좋아요', '1.5');
-INSERT INTO review ( member_id, product_id, review, grade ) VALUES ( '2', '2', '싫어요', '2.5');
-INSERT INTO review ( member_id, product_id, review, grade ) VALUES ( '3', '3', '별로에요', '3.5');
-INSERT INTO review ( member_id, product_id, review, grade ) VALUES ( '4', '4', '그저그래요', '4.5');
-INSERT INTO review ( member_id, product_id, review, grade ) VALUES ( '5', '5', '완벽해요', '3.5');
-INSERT INTO review ( member_id, product_id, review, grade ) VALUES ( '6', '6', '평범해요', '4.5');
-INSERT INTO review ( member_id, product_id, review, grade ) VALUES ( '7', '7', '끔찍해요', '4.5');
-INSERT INTO review ( member_id, product_id, review, grade ) VALUES ( '8', '8', '황홀해요', '2.5');
-INSERT INTO review ( member_id, product_id, review, grade ) VALUES ( '9', '99', '환상적이에요', '1.5');
+
+INSERT INTO review ( member_id, product_id, review, grade ) VALUES ( '1', '1', '좋아요', '1');
+INSERT INTO review ( member_id, product_id, review, grade ) VALUES ( '2', '2', '싫어요', '2');
+INSERT INTO review ( member_id, product_id, review, grade ) VALUES ( '3', '3', '별로에요', '3');
+INSERT INTO review ( member_id, product_id, review, grade ) VALUES ( '4', '4', '그저그래요', '4');
+INSERT INTO review ( member_id, product_id, review, grade ) VALUES ( '5', '5', '완벽해요', '3');
+INSERT INTO review ( member_id, product_id, review, grade ) VALUES ( '6', '6', '평범해요', '4');
+INSERT INTO review ( member_id, product_id, review, grade ) VALUES ( '7', '7', '끔찍해요', '4');
+INSERT INTO review ( member_id, product_id, review, grade ) VALUES ( '8', '8', '황홀해요', '2');
+INSERT INTO review ( member_id, product_id, review, grade ) VALUES ( '9', '99', '환상적이에요', '1');
+
 # 테이블 확인
 SELECT * FROM review;
 SELECT * FROM `member`;
 SELECT * FROM product;
 SELECT * FROM care;
 SELECT * FROM `type`;
+
 # product 테이블의 product.name을 as를 사용해 건성 + 스킨케어 제품으로 나오게 바꾸고 값은 product.type_id = 2 이면서 product.care_id = 1인 값을 불러 옴.
 # 해당 type_id와 care_id 는 위에서 설정 했음
 SELECT product.product_name AS `건성 + 스킨케어 제품` FROM product WHERE product.type_id = 2 AND product.care_id = 1;
 SELECT product.product_name FROM product WHERE product.type_id = 2 AND product.care_id = 1;
+
 # 리뷰에서 '좋'이 들어간 걸 찾기
 SELECT * FROM review WHERE review LIKE '좋%';
+
 SHOW DATABASES;
 USE Hwa;
 SHOW TABLES;
 SELECT * FROM product;
 SELECT * FROM care;
+
+
 desc `member`;
 
+##SELECT A.*, M.`member_name` AS extra_writerName
+##FROM product AS A
+##INNER JOIN `member` AS M
+##ORDER BY A.id DESC;
+
+SELECT * FROM product;
+SELECT * FROM care;
+SELECT * FROM `type`;
+
+SELECT product.id, care.id, `type`.id, product.product_name, product.product_brand, product.product_capacity, product.product_price, product.product_explanation
+FROM product
+JOIN `care` on product.id = `care`.id
+JOIN `type` on product.id = `type`.id;
