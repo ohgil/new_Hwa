@@ -2,6 +2,7 @@ package org.example.controller;
 
 
 import org.example.Container;
+import org.example.dto.Product;
 import org.example.dto.Review;
 import org.example.service.ReviewService;
 import org.example.util.DBUtil;
@@ -102,22 +103,6 @@ public class ReviewController {
             System.out.printf("%d / %s / %d \n", review.getProduct_id(), review.getReview(), review.getGrade());
         }
 
-        System.out.printf("세부정보를 확인 할 상품번호를 입력해주세요: ");
-        int product_id = scanner.nextInt();
-        scanner.nextLine();
-        Review searchedReview = null;
-        for (Review review : searchedReivewList) {
-            if (review.getId() == product_id) {
-                searchedReview = review;
-            }
-        }
-
-        if (searchedReview == null) {
-            System.out.println("검색되지 않은 상품번호입니다.");
-            return;
-        }
-
-        Container.session.setSessionReview(searchedReview);
     }
     public void showDetail() {
         Review review = Container.session.getSessionReview();
@@ -125,7 +110,7 @@ public class ReviewController {
         System.out.printf("번호 : %d\n", review.getId());
         // System.out.printf("등록일 : %s\n", article.regDate);
 //    System.out.printf("작성자 : %s\n", article.extra__writerName);
-        System.out.printf("작성자 : %d\n", review.getMember_id());
+//        System.out.printf("작성자 : %d\n", review.getMember_id());
         System.out.printf("상품번호 : %d\n", review.getProduct_id());
         System.out.printf("리뷰내용 : %s\n", review.getReview());
         System.out.printf("별점 : %d\n", review.getGrade());
@@ -137,14 +122,15 @@ public class ReviewController {
             return;
         }
 
-        System.out.printf("수정할 리뷰 번호을 입력해주세요: ");
+        System.out.printf("수정할 리뷰 번호를 입력해주세요: ");
         int product_id = Container.scanner.nextInt();
+        Container.scanner.nextLine();
 
         SecSql sql = new SecSql();
 
         sql.append("SELECT *");
         sql.append("FROM review");
-        sql.append("WHERE product_id = ?;", product_id);
+        sql.append("WHERE id = ?;", product_id);
 
         Container.session.setSessionReview(new Review(DBUtil.selectRow(Container.conn, sql)));
 
@@ -181,7 +167,7 @@ public class ReviewController {
         Container.scanner.nextLine();
 
         if (!reviewService.reviewExists(review_id)) {
-            System.out.printf("%d번 리뷰은 존재하지 않습니다.\n", review_id);
+            System.out.printf("%d번 리뷰는 존재하지 않습니다.\n", review_id);
             return;
         }
 
@@ -205,11 +191,11 @@ public class ReviewController {
         sql = new SecSql();
 
         sql.append("DELETE FROM review");
-        sql.append("WHERE review.id = ?;", review_id);
+        sql.append("WHERE id = ?;", review_id);
 
         DBUtil.delete(Container.conn, sql);
 
-        System.out.printf("%d번 상품이 삭제되었습니다.\n", review_id);
+        System.out.printf("%d번 리뷰가 삭제되었습니다.\n", review_id);
     }
 
 }
