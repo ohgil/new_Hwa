@@ -162,9 +162,13 @@ public class MemberController {
         continue;
       }
 
-      System.out.printf("\"%s\"님 환영합니다! 원하는 것 마음껏 이용하세요~!\n", member.getMember_name());
+      System.out.printf("\"%s\"님 환영합니다♥ 원하는 것 마음껏 이용하세요~!\n", member.getMember_name());
+      System.out.printf("\"%s\"님♥ 로그인 이후 사용 가능 한 기능목록 입니다. \n", member.getMember_name());
 
-      System.out.printf("\"%s\"님! 로그인 이후 사용 가능 한 기능목록 입니다. \n 1. 내정보 2. 상품등록 3. 상품검색 4. 상품설명 5. 상품수정 \n 6. 상품삭제 7. 리뷰등록 8. 리뷰검색 9. 리뷰수정 10. 리뷰삭제\n", member.getMember_name());
+      System.out.println("=".repeat(65));
+      System.out.println("1. 내정보   2. 상품등록   3. 상품검색   4. 상품설명    5. 상품수정");
+      System.out.println("6. 상품삭제 7. 리뷰등록   8. 리뷰검색   9. 리뷰수정   10. 리뷰삭제");
+      System.out.println("=".repeat(65));
       Container.session.login(member);
 
       break;

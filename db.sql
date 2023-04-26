@@ -229,25 +229,21 @@ INSERT INTO product ( care_id, type_id, product_name, product_brand, product_cap
 INSERT INTO product ( care_id, type_id, product_name, product_brand, product_capacity, product_price, product_explanation ) VALUES ( '5','5','아쿠아 라이스 약산성 클렌징폼','에스네이처','160','19000', 'product_explanation');
 INSERT INTO product ( care_id, type_id, product_name, product_brand, product_capacity, product_price, product_explanation ) VALUES ( '5','5','퓨어&딥 클렌징 폼','마녀공장','100','14000', 'product_explanation');
 
-INSERT INTO `member` (member_email , member_pwd, member_birth, member_gender, member_name) VALUES ( 'abc100@gmail.com', '100', '11', '1', '가');
-INSERT INTO `member` (member_email , member_pwd, member_birth, member_gender, member_name) VALUES ( 'abc200@gmail.com', '200', '22', '2', '나');
-INSERT INTO `member` (member_email , member_pwd, member_birth, member_gender, member_name) VALUES ( 'abc300@gmail.com', '300', '33', '1', '다');
-INSERT INTO `member` (member_email , member_pwd, member_birth, member_gender, member_name) VALUES ( 'abc400@gmail.com', '400', '44', '1', '라');
-INSERT INTO `member` (member_email , member_pwd, member_birth, member_gender, member_name) VALUES ( 'abc500@gmail.com', '500', '55', '2', '마');
-INSERT INTO `member` (member_email , member_pwd, member_birth, member_gender, member_name) VALUES ( 'abc600@gmail.com', '600', '66', '1', '바');
-INSERT INTO `member` (member_email , member_pwd, member_birth, member_gender, member_name) VALUES ( 'abc700@gmail.com', '700', '77', '1', '사');
-INSERT INTO `member` (member_email , member_pwd, member_birth, member_gender, member_name) VALUES ( 'abc800@gmail.com', '800', '88', '1', '아');
-INSERT INTO `member` (member_email , member_pwd, member_birth, member_gender, member_name) VALUES ( 'abc900@gmail.com', '900', '99', '1', '자');
+INSERT INTO `member` (member_email , member_pwd, member_birth, member_gender, member_name) VALUES ( 'scy@gmail.com', 'scy', '2001.01.28', '여', '송채');
+INSERT INTO `member` (member_email , member_pwd, member_birth, member_gender, member_name) VALUES ( 'khh@gmail.com', 'khh', '2001.01.28', '남', '김호');
+INSERT INTO `member` (member_email , member_pwd, member_birth, member_gender, member_name) VALUES ( 'ohw@gmail.com', 'ohw', '2001.01.28', '남', '오길');
+INSERT INTO `member` (member_email , member_pwd, member_birth, member_gender, member_name) VALUES ( 'his@gmail.com', 'his', '2001.01.28', '남', '황인');
+INSERT INTO `member` (member_email , member_pwd, member_birth, member_gender, member_name) VALUES ( 'kde@gmail.com', 'kde', '2001.01.28', '여', '김다');
+INSERT INTO `member` (member_email , member_pwd, member_birth, member_gender, member_name) VALUES ( 'sjh@gmail.com', 'sjh', '2001.01.28', '여', '송주');
+INSERT INTO `member` (member_email , member_pwd, member_birth, member_gender, member_name) VALUES ( 'koy@gmail.com', 'koy', '2001.01.28', '남', '고우');
+INSERT INTO `member` (member_email , member_pwd, member_birth, member_gender, member_name) VALUES ( 'pcg@gmail.com', 'pcg', '2001.01.28', '남', '박창');
+INSERT INTO `member` (member_email , member_pwd, member_birth, member_gender, member_name) VALUES ( 'ksy@gmail.com', 'ksy', '2001.01.28', '남', '김상');
 
-INSERT INTO review ( member_id, product_id, review, grade ) VALUES ( '1', '1', '좋아요', '1');
-INSERT INTO review ( member_id, product_id, review, grade ) VALUES ( '2', '2', '싫어요', '2');
-INSERT INTO review ( member_id, product_id, review, grade ) VALUES ( '3', '3', '별로에요', '3');
-INSERT INTO review ( member_id, product_id, review, grade ) VALUES ( '4', '4', '그저그래요', '4');
-INSERT INTO review ( member_id, product_id, review, grade ) VALUES ( '5', '5', '완벽해요', '3');
-INSERT INTO review ( member_id, product_id, review, grade ) VALUES ( '6', '6', '평범해요', '4');
-INSERT INTO review ( member_id, product_id, review, grade ) VALUES ( '7', '7', '끔찍해요', '4');
-INSERT INTO review ( member_id, product_id, review, grade ) VALUES ( '8', '8', '황홀해요', '2');
-INSERT INTO review ( member_id, product_id, review, grade ) VALUES ( '9', '99', '환상적이에요', '1');
+INSERT INTO review ( member_id, product_id, review, grade ) VALUES ( '3', '100', '좋아요', '1');
+INSERT INTO review ( member_id, product_id, review, grade ) VALUES ( '4', '101', '싫어요', '2');
+INSERT INTO review ( member_id, product_id, review, grade ) VALUES ( '5', '102', '별로에요', '3');
+INSERT INTO review ( member_id, product_id, review, grade ) VALUES ( '6', '103', '그저그래요', '4');
+INSERT INTO review ( member_id, product_id, review, grade ) VALUES ( '7', '104', '완벽해요', '3');
 
 # 테이블 확인
 SELECT * FROM review;
@@ -286,3 +282,22 @@ SELECT product.id, care.id, `type`.id, product.product_name, product.product_bra
 FROM product
 JOIN `care` on product.id = `care`.id
 JOIN `type` on product.id = `type`.id;
+
+DESC review;
+SELECT * FROM review;
+
+DELETE FROM review
+WHERE review.product_id = 161;
+
+SELECT * FROM `member`;
+SELECT * FROM `review`;
+
+
+SELECT P.id AS '상품번호', P.product_name AS '상품이름', M.member_name AS '작성자', R.review AS '내용', R.grade AS '별점'
+FROM `review` AS R
+INNER JOIN `member` AS M
+ON R.`member_id` = M.id
+INNER JOIN `product` AS P
+ON R.`product_id` = P.id
+WHERE M.`member_name` LIKE CONCAT('%', '채', '%')
+AND R.product_id = 3;
