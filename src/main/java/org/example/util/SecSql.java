@@ -7,7 +7,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SecSql {
+public class SecSql { // JDBC를 이용하여 데이터베이스 작업을 수행할 때 SQL 쿼리와 파라미터 값을 안전하게 처리할 수 있도록 도와주는 유틸리티 클래스인 SecSql을 정의
   private StringBuilder sqlBuilder;
   private List<Object> datas;
 
