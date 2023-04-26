@@ -81,8 +81,6 @@ public class App {
             Container.reviewController.write();
         } else if (rq.getUrlPath().equals("리뷰검색")) {
             Container.reviewController.search();
-            Container.reviewController.showDetail();
-            return;
         } else if (rq.getUrlPath().equals("리뷰수정")) {
             Container.reviewController.modify();
         } else if (rq.getUrlPath().equals("리뷰삭제")) {

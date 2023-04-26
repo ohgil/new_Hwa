@@ -48,10 +48,11 @@ public class ReviewRepository {
         SecSql sql = new SecSql();
 
         sql.append("UPDATE review");
-        sql.append("SET product_id = ?", product_id);
+        sql.append("SET member_id = ?", Container.session.loginedMemberId);
+        sql.append(", product_id = ?", product_id);
         sql.append(", review = ?", review);
         sql.append(", grade = ?", grade);
-        sql.append("WHERE id = ?", product_id);
+        sql.append("WHERE id = ?", Container.session.sessionReview.id);
 
         DBUtil.update(Container.conn, sql);
     }
